@@ -5,6 +5,11 @@ figma.showUI(__html__, { width: 600, height: 500 });
 let existingNodes = {};
 
 async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
+  // Check if the node still exists
+  if (existingNodes[data.id] && !figma.getNodeById(existingNodes[data.id].id)) {
+    delete existingNodes[data.id]; // Remove invalid reference
+  }
+
   let node = existingNodes[data.id];
 
   if (!node) {
@@ -39,6 +44,8 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
 
   node.name = data.name || data.type;
 
+  console.log(`Node after update:`, node);
+
   // Handle children
   if (data.children) {
     for (const child of data.children) {
@@ -48,20 +55,29 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
 }
 
 figma.ui.onmessage = (message) => {
-  const { json, cursorId } = message;
+  //const { json } = message;
+  // try {
+  //   existingNodes = {};
 
-  if (cursorId && existingNodes[cursorId]) {
-    // Select the corresponding node in Figma
-    figma.currentPage.selection = [existingNodes[cursorId]];
-    //figma.viewport.scrollAndZoomIntoView(figma.currentPage.selection);
-    return;
-  }
+  //   // Parse and process the JSON
+  //   const parsedJson = JSON.parse(json);
+  //   createOrUpdateFigmaComponent(parsedJson);
+  //   figma.notify("JSON file loaded and applied!");
+  //   console.log("JSON file updated!");
+  // } catch (error) {
+  //   figma.notify(`Error loading JSON: ${error.message}`);
+  //   console.error(error);
+  // }
 
-  try {
-    const parsedJson = JSON.parse(json);
-    createOrUpdateFigmaComponent(parsedJson);
-  } catch (error) {
-    figma.notify(`Error: ${error.message}`);
-    console.error(error);
+  if (message.action === "logNodes") {
+    logAllNodes(); // Call the function to log nodes
   }
 };
+
+function logAllNodes() {
+  const nodes = figma.currentPage.children;
+  console.log("All nodes in the current page:");
+  nodes.forEach((node) => {
+    console.log(`Node ID: ${node.id}, Name: ${node.name}, Type: ${node.type}`);
+  });
+}

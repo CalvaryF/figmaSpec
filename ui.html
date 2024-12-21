@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
     <style>
       body {
         margin: 0;
@@ -16,80 +10,42 @@
         height: 100vh;
       }
 
-      #editor {
-        flex: 1;
-        overflow: auto;
-      }
-
-      #runContainer {
-        position: sticky;
-        bottom: 0;
-        background: #fff;
-        border-top: 1px solid #ccc;
-        padding: 10px;
+      #fileInputContainer {
+        margin: 10px;
         text-align: center;
       }
 
-      button {
-        padding: 10px 20px;
+      input[type="file"] {
+        padding: 10px;
         font-size: 14px;
         cursor: pointer;
       }
     </style>
   </head>
   <body>
-    <div id="editor"></div>
-    <div id="runContainer">
-      <button id="runCode">Run</button>
+    <div id="fileInputContainer">
+      <input type="file" id="jsonFileInput" accept=".json" />
+      <button id="logNodes">Log All Nodes</button>
     </div>
     <script>
-      // Initialize CodeMirror editor
-      const editor = CodeMirror(document.getElementById("editor"), {
-        value:
-          '// Type your JSON here\n{\n  "type": "rectangle",\n  "width": 100,\n  "height": 100\n}',
-        mode: "javascript",
-        theme: "default",
-        lineNumbers: true,
+      const fileInput = document.getElementById("jsonFileInput");
+      const logNodesButton = document.getElementById("logNodes");
+
+      fileInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const json = reader.result;
+            parent.postMessage({ pluginMessage: { json } }, "*");
+          };
+          reader.readAsText(file);
+        }
       });
 
-      // Debounce function to limit the rate of updates
-      const debounce = (func, delay) => {
-        let timeout;
-        return (...args) => {
-          clearTimeout(timeout);
-          timeout = setTimeout(() => func(...args), delay);
-        };
-      };
-
-      // Function to send JSON updates
-      const sendJsonUpdate = debounce(() => {
-        const json = editor.getValue();
-        parent.postMessage({ pluginMessage: { json } }, "*");
-      }, 500); // Update every 500ms
-
-      // Function to send cursor ID
-      const sendCursorId = debounce(() => {
-        const cursor = editor.getCursor();
-        const line = editor.getLine(cursor.line);
-        const match = line.match(/\"id\": \"(.*?)\"/);
-        if (match) {
-          const cursorId = match[1];
-          parent.postMessage({ pluginMessage: { cursorId } }, "*");
-        }
-      }, 50);
-
-      // Listen for changes in the editor
-      editor.on("change", sendJsonUpdate);
-
-      // Listen for cursor activity to select corresponding node
-      editor.on("cursorActivity", sendCursorId);
-
-      // Manual Run button
-      const runCode = () => {
-        const json = editor.getValue();
-        parent.postMessage({ pluginMessage: { json } }, "*");
-      };
-      document.getElementById("runCode").onclick = runCode;
+      logNodesButton.addEventListener("click", () => {
+        parent.postMessage({ pluginMessage: { action: "logNodes" } }, "*");
+      });
     </script>
   </body>
 </html>
