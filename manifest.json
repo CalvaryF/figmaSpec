@@ -1,0 +1,8 @@
+{
+  "name": "Hello World Plugin",
+  "id": "hello-world-plugin",
+  "api": "1.0.0",
+  "editorType": ["figma"],
+  "main": "code.js",
+  "ui": "ui.html"
+}
