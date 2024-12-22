@@ -29,7 +29,9 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
               const refPath = child["$ref"];
               try {
                 const refData = fs.readFileSync(refPath, "utf8");
-                return JSON.parse(refData);
+                const resolvedChild = JSON.parse(refData);
+                // Recursively resolve $ref in the resolved child
+                return resolveRefs([resolvedChild])[0];
               } catch (refErr) {
                 console.error(
                   `Error reading or parsing ref file ${refPath}:`,

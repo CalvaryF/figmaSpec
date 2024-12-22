@@ -93,14 +93,6 @@ function deleteAllNodes() {
   }
 }
 
-function buildFromJSON(json) {
-  try {
-    createOrUpdateFigmaComponent(json);
-  } catch (error) {
-    console.log(`Error loading JSON: ${error.message}`);
-  }
-}
-
 function buildFromJSONArray(jsonArray) {
   try {
     for (const json of jsonArray) {

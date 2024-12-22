@@ -13,7 +13,7 @@
     "counterAxisSizingMode": "AUTO",
     "paddingTop": 20,
     "children": [
-      { "$ref": "./designs/components/header.json" },
+      { "$ref": "./designs/components/frame.json" },
       {
         "id": "aaa",
         "type": "text",

@@ -22,7 +22,9 @@ function createPreBuildPlugin(scriptPath) {
 }
 
 function watchAdditionalFiles(context, dir) {
+  console.log("watch called");
   const watchFiles = (dir) => {
+    console.log(dir);
     fs.readdir(dir, { withFileTypes: true }, (err, files) => {
       if (err) {
         console.error(`Error reading directory ${dir}:`, err);
@@ -76,6 +78,7 @@ async function buildWithPlugins(
 
   // Watch additional files
   if (additionalFiles.length > 0) {
+    console.log("watching");
     watchAdditionalFiles(context, additionalFiles);
   }
 }
@@ -85,7 +88,7 @@ const preBuildPlugin = createPreBuildPlugin("buildDesignFile.js");
 const additionalFilesToWatch = ["./designs"];
 
 buildWithPlugins(
-  ["code.js"],
+  ["buildFigmaFile.js"],
   "dist/bundle.js",
   [preBuildPlugin],
   additionalFilesToWatch

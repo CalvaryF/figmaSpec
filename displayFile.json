@@ -14,11 +14,34 @@
     "paddingTop": 20,
     "children": [
       {
-        "id": "aa",
-        "type": "rectangle",
-        "name": "Rectangle",
-        "width": 250,
-        "height": 500
+        "id": "root2",
+        "type": "frame",
+        "name": "Main Frame",
+        "width": 100,
+        "height": 100,
+        "y": 300,
+        "x": 400,
+        "autoLayout": true,
+        "layoutMode": "HORIZONTAL",
+        "primaryAxisSizingMode": "FIXED",
+        "counterAxisSizingMode": "AUTO",
+        "paddingTop": 20,
+        "children": [
+          {
+            "id": "aa",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "width": 250,
+            "height": 200
+          },
+          {
+            "id": "aaa",
+            "type": "text",
+            "name": "Text Node",
+            "characters": "frame text",
+            "fontSize": 24
+          }
+        ]
       },
       {
         "id": "aaa",
@@ -41,7 +64,7 @@
         "type": "rectangle",
         "name": "Rectangle",
         "width": 250,
-        "height": 500
+        "height": 200
       },
       {
         "id": "aaa",
