@@ -1,7 +1,7 @@
 {
-  "id": "header1",
-  "type": "text",
-  "name": "Header",
-  "characters": "Welcome!",
-  "fontSize": 32
+  "id": "aa",
+  "type": "rectangle",
+  "name": "Rectangle",
+  "width": 250,
+  "height": 500
 }

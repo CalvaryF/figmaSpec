@@ -1,6 +1,7 @@
 const esbuild = require("esbuild");
 const fs = require("fs");
 const { runScript } = require("./utils"); // Assume utils.js for shared utilities
+const path = require("path");
 
 // Plugin to run a script before build
 function createPreBuildPlugin(scriptPath) {
@@ -20,21 +21,35 @@ function createPreBuildPlugin(scriptPath) {
   };
 }
 
-// Watch additional files and trigger rebuild
-function watchAdditionalFiles(context, filesToWatch) {
-  filesToWatch.forEach((file) => {
-    fs.watch(file, async (eventType) => {
-      if (eventType === "change") {
-        console.log(`File changed: ${file}`);
-        try {
-          await context.rebuild(); // Trigger the rebuild
-          console.log("Rebuild completed.");
-        } catch (error) {
-          console.error(`Rebuild failed: ${error.message}`);
-        }
+function watchAdditionalFiles(context, dir) {
+  const watchFiles = (dir) => {
+    fs.readdir(dir, { withFileTypes: true }, (err, files) => {
+      if (err) {
+        console.error(`Error reading directory ${dir}:`, err);
+        return;
       }
+      files.forEach((file) => {
+        const fullPath = path.join(dir, file.name);
+        if (file.isDirectory()) {
+          watchFiles(fullPath); // Recursively watch subdirectories
+        } else {
+          fs.watch(fullPath, async (eventType) => {
+            if (eventType === "change") {
+              console.log(`File changed: ${fullPath}`);
+              try {
+                await context.rebuild();
+                console.log("Rebuild completed.");
+              } catch (error) {
+                console.error(`Rebuild failed: ${error.message}`);
+              }
+            }
+          });
+        }
+      });
     });
-  });
+  };
+
+  watchFiles(dir);
 }
 
 // Build function with plugins
@@ -67,7 +82,7 @@ async function buildWithPlugins(
 
 // Main Build Script
 const preBuildPlugin = createPreBuildPlugin("buildDesignFile.js");
-const additionalFilesToWatch = ["./designs/layout/layout.json"];
+const additionalFilesToWatch = ["./designs"];
 
 buildWithPlugins(
   ["code.js"],

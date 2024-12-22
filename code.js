@@ -1,5 +1,5 @@
 // Show the UI
-import design from "./designs/file1" assert { type: "json" };
+import design from "./displayFile" assert { type: "json" };
 
 figma.showUI(__html__, { width: 1, height: 1 });
 
