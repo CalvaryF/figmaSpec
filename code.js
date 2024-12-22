@@ -5,6 +5,7 @@ figma.showUI(__html__, { width: 600, height: 500 });
 let existingNodes = {};
 
 async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
+  console.log("create or update");
   // Check if the node still exists
   if (existingNodes[data.id] && !figma.getNodeById(existingNodes[data.id].id)) {
     delete existingNodes[data.id]; // Remove invalid reference
@@ -55,22 +56,20 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
 }
 
 figma.ui.onmessage = (message) => {
-  //const { json } = message;
-  // try {
-  //   existingNodes = {};
-
-  //   // Parse and process the JSON
-  //   const parsedJson = JSON.parse(json);
-  //   createOrUpdateFigmaComponent(parsedJson);
-  //   figma.notify("JSON file loaded and applied!");
-  //   console.log("JSON file updated!");
-  // } catch (error) {
-  //   figma.notify(`Error loading JSON: ${error.message}`);
-  //   console.error(error);
-  // }
-
-  if (message.action === "logNodes") {
-    logAllNodes(); // Call the function to log nodes
+  console.log("onmessage");
+  switch (message.action) {
+    case "logNodes":
+      logAllNodes();
+      break;
+    case "buildFromJson": {
+      deleteAllNodes();
+      buildFromJSON(message.json);
+      break;
+    }
+    default:
+      console.error("Unknown action:", message.action);
+      figma.notify("Unknown action:", message.action);
+      break;
   }
 };
 
@@ -80,4 +79,27 @@ function logAllNodes() {
   nodes.forEach((node) => {
     console.log(`Node ID: ${node.id}, Name: ${node.name}, Type: ${node.type}`);
   });
+}
+
+function deleteAllNodes() {
+  for (const node of figma.currentPage.children) {
+    node.remove();
+  }
+}
+
+function buildFromJSON(json) {
+  try {
+    existingNodes = {};
+    console.log("json is", json);
+    const parsedJson = JSON.parse(json);
+    console.log("parsed JSON is", parsedJson);
+
+    createOrUpdateFigmaComponent(parsedJson);
+    logAllNodes();
+    figma.notify("JSON file loaded and applied!");
+    console.log("JSON file updated!");
+  } catch (error) {
+    console.log(`Error loading JSON: ${error.message}`);
+    figma.notify(`Error loading JSON: ${error.message}`);
+  }
 }
