@@ -1,5 +1,5 @@
 // Show the UI
-figma.showUI(__html__, { width: 600, height: 500 });
+// figma.showUI(__html__, { width: 1, height: 1 });
 
 // Keep track of existing nodes
 let existingNodes = {};
@@ -55,23 +55,10 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
   }
 }
 
-figma.ui.onmessage = (message) => {
-  console.log("onmessage");
-  switch (message.action) {
-    case "logNodes":
-      logAllNodes();
-      break;
-    case "buildFromJson": {
-      deleteAllNodes();
-      buildFromJSON(message.json);
-      break;
-    }
-    default:
-      console.error("Unknown action:", message.action);
-      figma.notify("Unknown action:", message.action);
-      break;
-  }
-};
+figma.on("run", () => {
+  deleteAllNodes();
+  buildFromJSON(design);
+});
 
 function logAllNodes() {
   const nodes = figma.currentPage.children;
@@ -91,10 +78,9 @@ function buildFromJSON(json) {
   try {
     existingNodes = {};
     console.log("json is", json);
-    const parsedJson = JSON.parse(json);
-    console.log("parsed JSON is", parsedJson);
+    console.log("parsed JSON is", json);
 
-    createOrUpdateFigmaComponent(parsedJson);
+    createOrUpdateFigmaComponent(json);
     logAllNodes();
     figma.notify("JSON file loaded and applied!");
     console.log("JSON file updated!");
@@ -103,3 +89,27 @@ function buildFromJSON(json) {
     figma.notify(`Error loading JSON: ${error.message}`);
   }
 }
+
+const design = {
+  id: "root2",
+  type: "frame",
+  name: "Main Frame",
+  width: 100,
+  height: 400,
+  children: [
+    {
+      id: "aa",
+      type: "rectangle",
+      name: "Rectangle",
+      width: 100,
+      height: 100,
+    },
+    {
+      id: "aaa",
+      type: "text",
+      name: "Text Node",
+      characters: "Hello, Figma!",
+      fontSize: 24,
+    },
+  ],
+};

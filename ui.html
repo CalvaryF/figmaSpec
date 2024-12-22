@@ -7,7 +7,7 @@
         font-family: Arial, sans-serif;
         display: flex;
         flex-direction: column;
-        height: 100vh;
+        height: 10vh;
       }
 
       #fileInputContainer {
@@ -24,51 +24,12 @@
   </head>
   <body>
     <div id="fileInputContainer">
-      <input type="file" id="jsonFileInput" accept=".json" />
+      <!-- <input type="file" id="jsonFileInput" accept=".json" />
       <button id="update">Update</button>
-      <button id="logNodes">Log All Nodes</button>
+      <button id="logNodes">Log All Nodes</button> -->
     </div>
     <script>
-      const fileInput = document.getElementById("jsonFileInput");
-      const logNodesButton = document.getElementById("logNodes");
-      const updateButton = document.getElementById("update");
-
-      function loadFile(file) {
-        console.log("upload event");
-        console.log("file is", file);
-        if (file) {
-          console.log("if");
-          const reader = new FileReader();
-          reader.onload = () => {
-            console.log("reader.onload");
-            const json = reader.result;
-            parent.postMessage(
-              { pluginMessage: { action: "buildFromJson", json } },
-              "*"
-            );
-          };
-          reader.readAsText(file);
-        }
-        fileInput.value = ""; // Reset file input
-      }
-
-      fileInput.addEventListener("change", (event) => {
-        const file = event.target.files[0];
-        loadFile(file);
-      });
-
-      updateButton.addEventListener("click", (e) => {
-        if (fileInput.files.length) {
-          loadFile(fileInput.files[0]);
-        } else {
-          console.log("Choose a file to upload");
-          figma.notify("Choose a file to upload");
-        }
-      });
-
-      logNodesButton.addEventListener("click", () => {
-        parent.postMessage({ pluginMessage: { action: "logNodes" } }, "*");
-      });
+      // parent.postMessage({ pluginMessage: { action: "buildFromJson" } }, "*");
     </script>
   </body>
 </html>
