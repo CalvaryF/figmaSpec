@@ -1,0 +1,8 @@
+{
+  "id": "button1",
+  "type": "rectangle",
+  "name": "Button",
+  "width": 100,
+  "height": 50,
+  "characters": "Click Me"
+}

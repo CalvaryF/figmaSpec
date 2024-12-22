@@ -1,5 +1,5 @@
 // Show the UI
-import { design } from "./designs/file1";
+import design from "./designs/file1" assert { type: "json" };
 
 figma.showUI(__html__, { width: 1, height: 1 });
 
@@ -49,6 +49,22 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
     node.y = data.y || 0;
 
     node.name = data.name || data.type;
+
+    // Enable Auto Layout if specified
+    if (data.autoLayout) {
+      node.layoutMode = data.layoutMode || "NONE"; // "HORIZONTAL" or "VERTICAL"
+      node.primaryAxisSizingMode = data.primaryAxisSizingMode || "AUTO"; // "FIXED", "AUTO", "HUG", "FILL"
+      node.counterAxisSizingMode = data.counterAxisSizingMode || "AUTO"; // "FIXED", "AUTO", "HUG", "FILL"
+
+      // Set alignment, padding, and spacing
+      node.primaryAxisAlignItems = data.primaryAxisAlignItems || "MIN"; // "MIN", "CENTER", "MAX", "SPACE_BETWEEN"
+      node.counterAxisAlignItems = data.counterAxisAlignItems || "MIN"; // "MIN", "CENTER", "MAX"
+      node.paddingLeft = data.paddingLeft || 0;
+      node.paddingRight = data.paddingRight || 0;
+      node.paddingTop = data.paddingTop || 0;
+      node.paddingBottom = data.paddingBottom || 0;
+      node.itemSpacing = data.itemSpacing || 0; // Horizontal gap
+    }
 
     console.log(`Node after update:`, node);
 
