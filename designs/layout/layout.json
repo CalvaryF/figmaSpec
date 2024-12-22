@@ -5,13 +5,13 @@
     "name": "Main Frame",
     "width": 1200,
     "height": 200,
-    "y": 300,
+    "y": 400,
     "x": 500,
     "autoLayout": true,
     "layoutMode": "HORIZONTAL",
     "primaryAxisSizingMode": "FIXED",
     "counterAxisSizingMode": "AUTO",
-    "paddingTop": 20,
+    "paddingTop": 30,
     "children": [
       { "$ref": "./designs/components/frame.json" },
       {

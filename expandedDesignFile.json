@@ -5,13 +5,13 @@
     "name": "Main Frame",
     "width": 1200,
     "height": 200,
-    "y": 300,
+    "y": 400,
     "x": 500,
     "autoLayout": true,
     "layoutMode": "HORIZONTAL",
     "primaryAxisSizingMode": "FIXED",
     "counterAxisSizingMode": "AUTO",
-    "paddingTop": 20,
+    "paddingTop": 30,
     "children": [
       {
         "id": "root2",
@@ -31,8 +31,8 @@
             "id": "aa",
             "type": "rectangle",
             "name": "Rectangle",
-            "width": 20,
-            "height": 100
+            "width": 200,
+            "height": 200
           },
           {
             "id": "aaa",
@@ -63,8 +63,8 @@
         "id": "aa",
         "type": "rectangle",
         "name": "Rectangle",
-        "width": 20,
-        "height": 100
+        "width": 200,
+        "height": 200
       },
       {
         "id": "aaa",

@@ -52,11 +52,15 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
   layout = resolveRefs(layout);
 
   // Write resolved JSON to file1.json
-  fs.writeFile("./displayFile.json", JSON.stringify(layout, null, 2), (err) => {
-    if (err) {
-      console.error("Error writing to output file:", err);
-      return;
+  fs.writeFile(
+    "./expandedDesignFile.json",
+    JSON.stringify(layout, null, 2),
+    (err) => {
+      if (err) {
+        console.error("Error writing to output file:", err);
+        return;
+      }
+      console.log("JSON data successfully written to file1.json");
     }
-    console.log("JSON data successfully written to file1.json");
-  });
+  );
 });

@@ -85,7 +85,7 @@ async function buildWithPlugins(
 }
 
 // Main Build Script
-const preBuildPlugin = createPreBuildPlugin("buildDesignFile.js");
+const preBuildPlugin = createPreBuildPlugin("buildExpandedDesignFile.js");
 const additionalFilesToWatch = "./designs";
 
 buildWithPlugins(

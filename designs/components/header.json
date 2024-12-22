@@ -2,6 +2,6 @@
   "id": "aa",
   "type": "rectangle",
   "name": "Rectangle",
-  "width": 20,
-  "height": 100
+  "width": 200,
+  "height": 200
 }
