@@ -26,6 +26,7 @@ function watchAdditionalFiles(context, dir) {
   const watchFiles = (dir) => {
     console.log(dir);
     fs.readdir(dir, { withFileTypes: true }, (err, files) => {
+      console.log("reading");
       if (err) {
         console.error(`Error reading directory ${dir}:`, err);
         return;
@@ -85,7 +86,7 @@ async function buildWithPlugins(
 
 // Main Build Script
 const preBuildPlugin = createPreBuildPlugin("buildDesignFile.js");
-const additionalFilesToWatch = ["./designs"];
+const additionalFilesToWatch = "./designs";
 
 buildWithPlugins(
   ["buildFigmaFile.js"],
