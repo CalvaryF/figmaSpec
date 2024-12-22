@@ -1,12 +1,12 @@
 // Show the UI
-import { design } from "./file1";
+import { design } from "./designs/file1";
 
 figma.showUI(__html__, { width: 1, height: 1 });
 
 // Keep track of existing nodes
 figma.on("run", () => {
   deleteAllNodes();
-  buildFromJSON(design);
+  buildFromJSONArray(design);
 });
 
 async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
@@ -44,6 +44,10 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
       node.fontSize = data.fontSize || 16;
     }
 
+    // Set node position
+    node.x = data.x || 0;
+    node.y = data.y || 0;
+
     node.name = data.name || data.type;
 
     console.log(`Node after update:`, node);
@@ -78,5 +82,15 @@ function buildFromJSON(json) {
     createOrUpdateFigmaComponent(json);
   } catch (error) {
     console.log(`Error loading JSON: ${error.message}`);
+  }
+}
+
+function buildFromJSONArray(jsonArray) {
+  try {
+    for (const json of jsonArray) {
+      createOrUpdateFigmaComponent(json);
+    }
+  } catch (error) {
+    console.log(`Error loading JSON array: ${error.message}`);
   }
 }
