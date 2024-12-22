@@ -1,4 +1,6 @@
 // Show the UI
+import { design } from "./file1";
+
 figma.showUI(__html__, { width: 1, height: 1 });
 
 // Keep track of existing nodes
@@ -78,27 +80,3 @@ function buildFromJSON(json) {
     console.log(`Error loading JSON: ${error.message}`);
   }
 }
-
-const design = {
-  id: "root2",
-  type: "frame",
-  name: "Main Frame",
-  width: 200,
-  height: 100,
-  children: [
-    {
-      id: "aa",
-      type: "rectangle",
-      name: "Rectangle",
-      width: 100,
-      height: 400,
-    },
-    {
-      id: "aaa",
-      type: "text",
-      name: "Text Node",
-      characters: "Hello, Figma aklsdfjh!",
-      fontSize: 24,
-    },
-  ],
-};

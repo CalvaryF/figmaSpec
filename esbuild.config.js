@@ -2,7 +2,7 @@ const esbuild = require("esbuild");
 
 async function build() {
   const context = await esbuild.context({
-    entryPoints: ["file1.js"], // Replace with your files
+    entryPoints: ["code.js"], // Replace with your files
     bundle: true,
 
     outfile: "dist/bundle.js", // Output file
