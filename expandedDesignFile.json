@@ -1,77 +1,51 @@
 [
   {
-    "id": "root2",
-    "type": "frame",
-    "name": "Main Frame",
-    "width": 1200,
-    "height": 200,
-    "y": 400,
-    "x": 500,
-    "autoLayout": true,
-    "layoutMode": "HORIZONTAL",
-    "primaryAxisSizingMode": "FIXED",
-    "counterAxisSizingMode": "AUTO",
-    "paddingTop": 30,
-    "children": [
-      {
-        "id": "root2",
-        "type": "frame",
-        "name": "Main Frame",
-        "width": 100,
-        "height": 100,
-        "y": 300,
-        "x": 400,
-        "autoLayout": true,
-        "layoutMode": "HORIZONTAL",
-        "primaryAxisSizingMode": "FIXED",
-        "counterAxisSizingMode": "AUTO",
-        "paddingTop": 20,
-        "children": [
-          {
-            "id": "aa",
-            "type": "rectangle",
-            "name": "Rectangle",
-            "width": 200,
-            "height": 200
-          },
-          {
-            "id": "aaa",
-            "type": "text",
-            "name": "Text Node",
-            "characters": "frame text",
-            "fontSize": 24
+    "id": "COMPONENT_ID",
+    "type": "component",
+    "name": "My Component",
+    "props": {
+      "layoutMode": "VERTICAL",
+      "primaryAxisSizingMode": "AUTO",
+      "counterAxisSizingMode": "AUTO",
+      "paddingBottom": 50,
+      "paddingLeft": 50,
+      "paddingRight": 50,
+      "paddingTop": 50,
+      "fills": [
+        {
+          "type": "SOLID",
+          "color": {
+            "r": 0,
+            "g": 1,
+            "b": 1
           }
-        ]
-      },
-      {
-        "id": "aaa",
-        "type": "text",
-        "name": "Text Node",
-        "characters": "Hello, Figma aklsdfjh!",
-        "fontSize": 24
-      }
-    ]
+        }
+      ]
+    }
   },
   {
     "id": "root2",
     "type": "frame",
     "name": "Main Frame",
-    "width": 400,
-    "height": 200,
+    "props": {
+      "layoutMode": "VERTICAL",
+      "primaryAxisSizingMode": "AUTO",
+      "counterAxisSizingMode": "AUTO",
+      "paddingBottom": 50,
+      "paddingLeft": 50,
+      "paddingRight": 50,
+      "paddingTop": 50
+    },
     "children": [
       {
-        "id": "aa",
-        "type": "rectangle",
-        "name": "Rectangle",
-        "width": 200,
-        "height": 200
-      },
-      {
-        "id": "aaa",
-        "type": "text",
-        "name": "Text Node",
-        "characters": "Hello, Figma aklsdfjh!",
-        "fontSize": 24
+        "id": "root4",
+        "type": "componentInstance",
+        "componentId": "COMPONENT_ID",
+        "name": "Instance of My Component",
+        "props": {
+          "x": 100,
+          "y": 200
+        }
       }
     ]
   }
