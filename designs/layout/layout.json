@@ -10,7 +10,7 @@
       "paddingBottom": 50,
       "paddingLeft": 50,
       "paddingRight": 50,
-      "paddingTop": 40
+      "paddingTop": 50
     },
     "children": [
       {
@@ -21,6 +21,10 @@
       },
       {
         "$ref": "./designs/components/button.json"
+      },
+      {
+        "$ref": "./designs/components/variantsTest.json",
+        "variant": "variant_one"
       }
     ]
   }

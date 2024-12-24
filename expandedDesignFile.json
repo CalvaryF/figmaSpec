@@ -1,5 +1,75 @@
 [
   {
+    "id": "variant_test",
+    "type": "componentSet",
+    "default": "variant_1",
+    "props": {
+      "name": "variantsTest"
+    },
+    "variants": [
+      {
+        "id": "variant_eight",
+        "type": "component",
+        "props": {
+          "name": "variant_eight",
+          "layoutMode": "VERTICAL",
+          "fills": [
+            {
+              "type": "SOLID",
+              "color": {
+                "r": 0.8,
+                "g": 0.8,
+                "b": 0.8
+              }
+            }
+          ]
+        },
+        "children": [
+          {
+            "id": "button_component",
+            "type": "componentInstance"
+          }
+        ]
+      },
+      {
+        "id": "variant_five",
+        "type": "component",
+        "props": {
+          "name": "variant_five",
+          "layoutMode": "VERTICAL",
+          "fills": [
+            {
+              "type": "SOLID",
+              "color": {
+                "r": 0.5,
+                "g": 0.5,
+                "b": 0.5
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "variant_one",
+        "type": "component",
+        "props": {
+          "name": "variant_one",
+          "layoutMode": "VERTICAL",
+          "fills": [
+            {
+              "type": "SOLID",
+              "color": {
+                "r": 0.1,
+                "g": 0.1,
+                "b": 0.1
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
     "id": "icon_component",
     "type": "component",
     "props": {
@@ -71,34 +141,6 @@
       "paddingTop": 10
     },
     "children": [
-      {
-        "id": "button_component",
-        "type": "componentInstance"
-      }
-    ]
-  },
-  {
-    "id": "main_frame",
-    "type": "frame",
-    "props": {
-      "name": "Main Frame",
-      "layoutMode": "VERTICAL",
-      "primaryAxisSizingMode": "AUTO",
-      "counterAxisSizingMode": "AUTO",
-      "paddingBottom": 50,
-      "paddingLeft": 50,
-      "paddingRight": 50,
-      "paddingTop": 40
-    },
-    "children": [
-      {
-        "id": "frame_component",
-        "type": "componentInstance"
-      },
-      {
-        "id": "frame_component",
-        "type": "componentInstance"
-      },
       {
         "id": "button_component",
         "type": "componentInstance"

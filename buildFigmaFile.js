@@ -23,7 +23,7 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
   if (data.type === "componentInstance") {
     // Resolve component by custom ID stored in pluginData
     const component = figma.currentPage.findOne((n) => {
-      console.log(n.getPluginData("customId"));
+      //  console.log(n.getPluginData("customId"));
       return n.getPluginData("customId") === data.id;
     });
     if (component && component.type === "COMPONENT") {
@@ -32,11 +32,34 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
       console.error(`Component with customId "${data.id}" not found.`);
       return;
     }
+  } else if (data.type === "componentSet") {
+    console.log("fallback");
+    // Build each variant as a standalone component
+    const variants = [];
+    for (const variant of data.variants) {
+      const variantNode = await createOrUpdateFigmaComponent(variant, parent);
+      if (variantNode) variants.push(variantNode);
+    }
+    console.log(variants);
+    // Combine into a single set if possible
+    if (variants.length > 1) {
+      console.log("variant set tried");
+      node = figma.combineAsVariants(variants, parent);
+      node.name =
+        (data.props && data.props.name) != null
+          ? data.props.name
+          : "Unnamed Variant Set";
+      node.setPluginData("customId", data.id);
+    } else {
+      console.log("fallback");
+      // Fallback if there's only one variant
+      node = variants[0];
+    }
   } else {
     node = await createNodeByType(data.type);
     if (data.type === "component") {
       node.setPluginData("customId", data.id);
-      console.log(node.getPluginData("customId"));
+      // console.log(node.getPluginData("customId"));
     }
   }
 
@@ -56,6 +79,7 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
       await createOrUpdateFigmaComponent(child, node);
     }
   }
+  return node;
 }
 function arrangeBaseNodes(nodes) {
   let offsetXComponent = 0;
@@ -65,8 +89,12 @@ function arrangeBaseNodes(nodes) {
   let componentSectionHeightOffset = 30;
 
   // Separate nodes into components and others
-  const components = nodes.filter((node) => node.type === "COMPONENT");
-  const others = nodes.filter((node) => node.type !== "COMPONENT");
+  const components = nodes.filter(
+    (node) => node.type === "COMPONENT" || node.type === "COMPONENT_SET"
+  );
+  const others = nodes.filter(
+    (node) => node.type !== "COMPONENT" && node.type !== "COMPONENT_SET"
+  );
 
   // Create a section node for components
   const componentSection = figma.createSection();

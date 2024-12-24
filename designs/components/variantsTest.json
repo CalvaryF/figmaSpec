@@ -7,54 +7,59 @@
   },
   "variants": [
     {
-      "id": "icon_component",
+      "id": "variant_eight",
       "type": "component",
       "props": {
-        "name": "Icon",
+        "name": "variant_eight",
         "layoutMode": "VERTICAL",
         "fills": [
           {
             "type": "SOLID",
             "color": {
-              "r": 1,
-              "g": 0,
-              "b": 1
+              "r": 0.8,
+              "g": 0.8,
+              "b": 0.8
+            }
+          }
+        ]
+      },
+      "children": [
+        {
+          "$ref": "./designs/components/button.json"
+        }
+      ]
+    },
+    {
+      "id": "variant_five",
+      "type": "component",
+      "props": {
+        "name": "variant_five",
+        "layoutMode": "VERTICAL",
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.5,
+              "g": 0.5,
+              "b": 0.5
             }
           }
         ]
       }
     },
     {
-      "id": "icon_component",
+      "id": "variant_one",
       "type": "component",
       "props": {
-        "name": "Icon",
+        "name": "variant_one",
         "layoutMode": "VERTICAL",
         "fills": [
           {
             "type": "SOLID",
             "color": {
-              "r": 1,
-              "g": 0,
-              "b": 1
-            }
-          }
-        ]
-      }
-    },
-    {
-      "id": "icon_component",
-      "type": "component",
-      "props": {
-        "name": "Icon",
-        "layoutMode": "VERTICAL",
-        "fills": [
-          {
-            "type": "SOLID",
-            "color": {
-              "r": 1,
-              "g": 0,
-              "b": 1
+              "r": 0.1,
+              "g": 0.1,
+              "b": 0.1
             }
           }
         ]

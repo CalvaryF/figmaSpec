@@ -31,6 +31,9 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
         if (Array.isArray(obj.children)) {
           components = components.concat(extractComponents(obj.children));
         }
+        // if (Array.isArray(obj.variants)) {
+        //   components = components.concat(extractComponents(obj.variants));
+        // }
 
         // Resolve $ref and process the resolved object
         if (obj["$ref"]) {
@@ -40,7 +43,10 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
               const refData = fs.readFileSync(refPath, "utf8");
               const resolvedChild = JSON.parse(refData);
 
-              if (resolvedChild.type === "component") {
+              if (
+                resolvedChild.type === "component" ||
+                resolvedChild.type === "componentSet"
+              ) {
                 resolvedRefs.add(refPath);
                 components.push(resolvedChild);
               }
@@ -64,7 +70,7 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
       return components;
     };
 
-    function resolveStructure(obj) {
+    function resolveStructure(obj, selectVariants) {
       if (!Array.isArray(obj)) return obj;
 
       return obj.map((node) => {
@@ -76,12 +82,11 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
             if (parsed.type === "component") {
               if (parsed.props) delete parsed.props;
               if (parsed.children) delete parsed.children;
+              return {
+                ...parsed,
+                type: "componentInstance",
+              };
             }
-
-            return {
-              ...parsed,
-              type: "componentInstance",
-            };
           } catch (err) {
             console.error("Error reading/parsing ref:", err);
             return node;
@@ -92,17 +97,21 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
           node.children = resolveStructure(node.children);
         }
 
+        if (Array.isArray(node.variants)) {
+          node.variants = resolveStructure(node.variants);
+        }
+
         return node;
       });
     }
 
     // Process: Extract components, then build structure
     const extractedComponents = resolveStructure(
-      extractComponents(objArray)
+      extractComponents(objArray, true)
     ).reverse();
     const structuredArray = resolveStructure(objArray);
 
-    return [...extractedComponents, ...structuredArray];
+    return [...extractedComponents];
   };
 
   layout = resolveRefs(layout);
