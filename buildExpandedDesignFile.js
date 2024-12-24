@@ -66,43 +66,8 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
 
       return components;
     };
-    const fs = require("fs");
 
-    const resolveStructure = (objArray) => {
-      if (!Array.isArray(objArray)) return objArray; // Handle non-array inputs gracefully
-
-      return objArray.map((obj) => {
-        // Recursively resolve children
-        if (Array.isArray(obj.children)) {
-          obj.children = obj.children.map((child) => {
-            if (child["$ref"]) {
-              const refPath = child["$ref"];
-              try {
-                // Read and parse the referenced file
-                const refData = fs.readFileSync(refPath, "utf8");
-                const resolvedChild = JSON.parse(refData);
-
-                // Replace $ref object with resolved data and change type to "instance"
-                return {
-                  ...resolveStructure([resolvedChild])[0], // Ensure nested $refs are resolved
-                  type: "componentInstance",
-                };
-              } catch (refErr) {
-                console.error(
-                  `Error reading or parsing $ref file at ${refPath}:`,
-                  refErr
-                );
-                return child; // Return the original child if there's an error
-              }
-            }
-            return child; // Return child unchanged if no $ref
-          });
-        }
-        return obj; // Return object unchanged if no $ref in children
-      });
-    };
-
-    function resolveStructure2(obj) {
+    function resolveStructure(obj) {
       if (!Array.isArray(obj)) return obj;
 
       return obj.map((node) => {
@@ -111,12 +76,13 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
             const data = fs.readFileSync(node.$ref, "utf8");
             const parsed = JSON.parse(data);
 
-            const resolved = resolveStructure2([parsed])[0];
-            if (resolved.props) delete resolved.props;
-            if (resolved.children) delete resolved.children;
+            if (parsed.type === "component") {
+              if (parsed.props) delete parsed.props;
+              if (parsed.children) delete parsed.children;
+            }
 
             return {
-              ...resolved,
+              ...parsed,
               type: "componentInstance",
             };
           } catch (err) {
@@ -126,7 +92,7 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
         }
 
         if (Array.isArray(node.children)) {
-          node.children = resolveStructure2(node.children);
+          node.children = resolveStructure(node.children);
         }
 
         return node;
@@ -134,12 +100,12 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
     }
 
     // Process: Extract components, then build structure
-    const extractedComponents = resolveStructure2(
+    const extractedComponents = resolveStructure(
       extractComponents(objArray)
     ).reverse();
-    const structuredArray = resolveStructure2(objArray);
+    const structuredArray = resolveStructure(objArray);
 
-    return [...extractedComponents];
+    return [...extractedComponents, ...structuredArray];
   };
 
   layout = resolveRefs(layout);

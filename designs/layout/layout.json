@@ -18,6 +18,9 @@
       },
       {
         "$ref": "./designs/components/frame.json"
+      },
+      {
+        "$ref": "./designs/components/button.json"
       }
     ]
   }

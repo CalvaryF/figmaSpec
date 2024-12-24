@@ -78,5 +78,36 @@
         "name": "Button"
       }
     ]
+  },
+  {
+    "id": "main_frame",
+    "type": "frame",
+    "name": "Main Frame",
+    "props": {
+      "layoutMode": "VERTICAL",
+      "primaryAxisSizingMode": "AUTO",
+      "counterAxisSizingMode": "AUTO",
+      "paddingBottom": 50,
+      "paddingLeft": 50,
+      "paddingRight": 50,
+      "paddingTop": 40
+    },
+    "children": [
+      {
+        "id": "frame_component",
+        "type": "componentInstance",
+        "name": "frame_component"
+      },
+      {
+        "id": "frame_component",
+        "type": "componentInstance",
+        "name": "frame_component"
+      },
+      {
+        "id": "button_component",
+        "type": "componentInstance",
+        "name": "Button"
+      }
+    ]
   }
 ]
