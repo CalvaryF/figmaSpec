@@ -57,14 +57,58 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
     }
   }
 }
-
 function arrangeBaseNodes(nodes) {
-  let offsetX = 0;
+  let offsetXComponent = 0;
+  let offsetXOther = 0;
   let spacing = 100;
-  for (const node of nodes) {
-    node.x = offsetX;
-    node.y = 0;
-    offsetX += node.width + spacing;
+  let tallestComponentHeight = 0;
+  let componentSectionHeightOffset = 30;
+
+  // Separate nodes into components and others
+  const components = nodes.filter((node) => node.type === "COMPONENT");
+  const others = nodes.filter((node) => node.type !== "COMPONENT");
+
+  // Create a section node for components
+  const componentSection = figma.createSection();
+
+  // Track total width for the section
+  let totalComponentWidth = 0;
+
+  // Arrange components in the upper row and add to the section
+  for (const component of components) {
+    component.x = offsetXComponent + spacing / 2;
+    component.y = spacing / 2 + componentSectionHeightOffset; // Top row within the section
+    offsetXComponent += component.width + spacing;
+
+    // Add the component to the section
+    componentSection.appendChild(component);
+
+    // Update the tallest component height
+    if (component.height > tallestComponentHeight) {
+      tallestComponentHeight = component.height;
+    }
+
+    // Update total width for the section
+    totalComponentWidth = offsetXComponent - spacing; // Subtract extra spacing after the last component
+  }
+
+  // Adjust section size to fit components
+  componentSection.resizeWithoutConstraints(
+    totalComponentWidth + spacing,
+    tallestComponentHeight + spacing + componentSectionHeightOffset
+  );
+  componentSection.name = "Components";
+
+  // Position the section on the canvas
+  componentSection.x = 0; // Adjust as needed
+  componentSection.y = 0; // Adjust as needed
+
+  // Arrange other nodes in the lower row
+  for (const other of others) {
+    other.x = offsetXOther;
+    other.y =
+      spacing + tallestComponentHeight + spacing + componentSectionHeightOffset; // Below the tallest component
+    offsetXOther += other.width + spacing;
   }
 }
 
