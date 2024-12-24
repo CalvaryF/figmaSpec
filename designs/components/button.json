@@ -4,15 +4,26 @@
   "name": "Button",
   "props": {
     "layoutMode": "VERTICAL",
+    "primaryAxisSizingMode": "AUTO",
+    "counterAxisSizingMode": "AUTO",
+    "paddingBottom": 50,
+    "paddingLeft": 50,
+    "paddingRight": 50,
+    "paddingTop": 40,
     "fills": [
       {
         "type": "SOLID",
         "color": {
           "r": 1,
-          "g": 0,
+          "g": 1,
           "b": 0
         }
       }
     ]
-  }
+  },
+  "children": [
+    {
+      "$ref": "./designs/components/icon.json"
+    }
+  ]
 }

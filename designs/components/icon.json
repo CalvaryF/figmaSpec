@@ -1,0 +1,18 @@
+{
+  "id": "icon_component",
+  "type": "component",
+  "name": "Icon",
+  "props": {
+    "layoutMode": "VERTICAL",
+    "fills": [
+      {
+        "type": "SOLID",
+        "color": {
+          "r": 1,
+          "g": 0,
+          "b": 1
+        }
+      }
+    ]
+  }
+}

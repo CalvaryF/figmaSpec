@@ -15,15 +15,11 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
 
   if (data.type === "componentInstance") {
     // Resolve component by custom ID stored in pluginData
-    const component = figma.currentPage.findOne(
-
-      (n) => {
-        console.log(n.getPluginData("customId")); 
-       // console.log(data.id);
-        return n.getPluginData("customId") === data.id
-      }
-    );
-console.log(component);
+    const component = figma.currentPage.findOne((n) => {
+      console.log(n.getPluginData("customId"));
+      return n.getPluginData("customId") === data.id;
+    });
+    console.log(component);
     if (component && component.type === "COMPONENT") {
       node = component.createInstance();
     } else {

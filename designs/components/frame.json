@@ -4,6 +4,8 @@
   "name": "frame_component",
   "props": {
     "layoutMode": "VERTICAL",
+    "primaryAxisSizingMode": "AUTO",
+    "counterAxisSizingMode": "AUTO",
     "fills": [
       {
         "type": "SOLID",
@@ -13,7 +15,11 @@
           "b": 1
         }
       }
-    ]
+    ],
+    "paddingLeft": 10,
+    "paddingRight": 10,
+    "paddingBottom": 10,
+    "paddingTop": 10
   },
   "children": [
     {
