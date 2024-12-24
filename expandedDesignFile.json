@@ -2,8 +2,8 @@
   {
     "id": "icon_component",
     "type": "component",
-    "name": "Icon",
     "props": {
+      "name": "Icon",
       "layoutMode": "VERTICAL",
       "fills": [
         {
@@ -20,8 +20,8 @@
   {
     "id": "button_component",
     "type": "component",
-    "name": "Button",
     "props": {
+      "name": "Button",
       "layoutMode": "VERTICAL",
       "primaryAxisSizingMode": "AUTO",
       "counterAxisSizingMode": "AUTO",
@@ -43,16 +43,15 @@
     "children": [
       {
         "id": "icon_component",
-        "type": "componentInstance",
-        "name": "Icon"
+        "type": "componentInstance"
       }
     ]
   },
   {
     "id": "frame_component",
     "type": "component",
-    "name": "frame_component",
     "props": {
+      "name": "frame_component",
       "layoutMode": "VERTICAL",
       "primaryAxisSizingMode": "AUTO",
       "counterAxisSizingMode": "AUTO",
@@ -74,16 +73,15 @@
     "children": [
       {
         "id": "button_component",
-        "type": "componentInstance",
-        "name": "Button"
+        "type": "componentInstance"
       }
     ]
   },
   {
     "id": "main_frame",
     "type": "frame",
-    "name": "Main Frame",
     "props": {
+      "name": "Main Frame",
       "layoutMode": "VERTICAL",
       "primaryAxisSizingMode": "AUTO",
       "counterAxisSizingMode": "AUTO",
@@ -95,18 +93,15 @@
     "children": [
       {
         "id": "frame_component",
-        "type": "componentInstance",
-        "name": "frame_component"
+        "type": "componentInstance"
       },
       {
         "id": "frame_component",
-        "type": "componentInstance",
-        "name": "frame_component"
+        "type": "componentInstance"
       },
       {
         "id": "button_component",
-        "type": "componentInstance",
-        "name": "Button"
+        "type": "componentInstance"
       }
     ]
   }

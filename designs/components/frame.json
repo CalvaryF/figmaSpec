@@ -1,8 +1,8 @@
 {
   "id": "frame_component",
   "type": "component",
-  "name": "frame_component",
   "props": {
+    "name": "frame_component",
     "layoutMode": "VERTICAL",
     "primaryAxisSizingMode": "AUTO",
     "counterAxisSizingMode": "AUTO",

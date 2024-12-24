@@ -5,9 +5,16 @@ import design from "./expandedDesignFile" assert { type: "json" };
 figma.showUI(__html__, { width: 1, height: 1 });
 
 // Event: Handle run
-figma.on("run", () => {
-  figma.currentPage.children.forEach((node) => node.remove());
-  design.forEach((json) => createOrUpdateFigmaComponent(json));
+figma.on("run", async () => {
+  figma.currentPage.children.forEach((n) => n.remove());
+
+  // Create everything
+  for (const item of design) {
+    await createOrUpdateFigmaComponent(item);
+  }
+
+  // Arrange top-level nodes
+  arrangeBaseNodes(figma.currentPage.children);
 });
 
 async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
@@ -19,7 +26,6 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
       console.log(n.getPluginData("customId"));
       return n.getPluginData("customId") === data.id;
     });
-    console.log(component);
     if (component && component.type === "COMPONENT") {
       node = component.createInstance();
     } else {
@@ -40,7 +46,6 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
   }
 
   parent.appendChild(node);
-  node.name = data.name || node.name;
 
   // Apply properties
   Object.assign(node, data.props);
@@ -50,6 +55,16 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
     for (const child of data.children) {
       await createOrUpdateFigmaComponent(child, node);
     }
+  }
+}
+
+function arrangeBaseNodes(nodes) {
+  let offsetX = 0;
+  let spacing = 100;
+  for (const node of nodes) {
+    node.x = offsetX;
+    node.y = 0;
+    offsetX += node.width + spacing;
   }
 }
 

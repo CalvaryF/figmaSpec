@@ -1,8 +1,8 @@
 {
   "id": "button_component",
   "type": "component",
-  "name": "Button",
   "props": {
+    "name": "Button",
     "layoutMode": "VERTICAL",
     "primaryAxisSizingMode": "AUTO",
     "counterAxisSizingMode": "AUTO",

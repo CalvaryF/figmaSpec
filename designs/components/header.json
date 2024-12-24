@@ -1,8 +1,8 @@
 {
   "id": "header_component",
   "type": "component",
-  "name": "header",
   "props": {
+    "name": "header",
     "layoutMode": "VERTICAL",
     "fills": [
       {

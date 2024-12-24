@@ -1,10 +1,7 @@
 const fs = require("fs");
 
-console.log("Hello.js script started...");
-
 // Read JSON from layout.json
 fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
-  console.log("building file");
   if (err) {
     console.error("Error reading input file:", err);
     return;

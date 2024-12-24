@@ -2,8 +2,8 @@
   {
     "id": "main_frame",
     "type": "frame",
-    "name": "Main Frame",
     "props": {
+      "name": "Main Frame",
       "layoutMode": "VERTICAL",
       "primaryAxisSizingMode": "AUTO",
       "counterAxisSizingMode": "AUTO",
