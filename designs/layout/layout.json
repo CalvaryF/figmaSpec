@@ -1,30 +1,6 @@
 [
   {
-    "id": "COMPONENT_ID",
-    "type": "component",
-    "name": "My Component",
-    "props": {
-      "layoutMode": "VERTICAL",
-      "primaryAxisSizingMode": "AUTO",
-      "counterAxisSizingMode": "AUTO",
-      "paddingBottom": 50,
-      "paddingLeft": 50,
-      "paddingRight": 50,
-      "paddingTop": 50,
-      "fills": [
-        {
-          "type": "SOLID",
-          "color": {
-            "r": 0,
-            "g": 1,
-            "b": 1
-          }
-        }
-      ]
-    }
-  },
-  {
-    "id": "root2",
+    "id": "main_frame",
     "type": "frame",
     "name": "Main Frame",
     "props": {
@@ -38,14 +14,10 @@
     },
     "children": [
       {
-        "id": "root4",
-        "type": "componentInstance",
-        "componentId": "COMPONENT_ID",
-        "name": "Instance of My Component",
-        "props": {
-          "x": 100,
-          "y": 200
-        }
+        "$ref": "./designs/components/frame.json"
+      },
+      {
+        "$ref": "./designs/components/frame.json"
       }
     ]
   }

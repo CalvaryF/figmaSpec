@@ -19,21 +19,22 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
 
       (n) => {
         console.log(n.getPluginData("customId")); 
-        console.log(data.id);
-        return n.getPluginData("customId") === data.componentId
+       // console.log(data.id);
+        return n.getPluginData("customId") === data.id
       }
     );
-
+console.log(component);
     if (component && component.type === "COMPONENT") {
       node = component.createInstance();
     } else {
-      console.error(`Component with customId "${data.componentId}" not found.`);
+      console.error(`Component with customId "${data.id}" not found.`);
       return;
     }
   } else {
     node = await createNodeByType(data.type);
     if (data.type === "component") {
       node.setPluginData("customId", data.id);
+      console.log(node.getPluginData("customId"));
     }
   }
 

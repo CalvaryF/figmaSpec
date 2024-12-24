@@ -1,16 +1,28 @@
 [
   {
-    "id": "COMPONENT_ID",
+    "id": "button_component",
     "type": "component",
-    "name": "My Component",
+    "name": "Button",
     "props": {
       "layoutMode": "VERTICAL",
-      "primaryAxisSizingMode": "AUTO",
-      "counterAxisSizingMode": "AUTO",
-      "paddingBottom": 50,
-      "paddingLeft": 50,
-      "paddingRight": 50,
-      "paddingTop": 50,
+      "fills": [
+        {
+          "type": "SOLID",
+          "color": {
+            "r": 1,
+            "g": 0,
+            "b": 0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "frame_component",
+    "type": "component",
+    "name": "frame_component",
+    "props": {
+      "layoutMode": "VERTICAL",
       "fills": [
         {
           "type": "SOLID",
@@ -21,30 +33,24 @@
           }
         }
       ]
-    }
-  },
-  {
-    "id": "root2",
-    "type": "frame",
-    "name": "Main Frame",
-    "props": {
-      "layoutMode": "VERTICAL",
-      "primaryAxisSizingMode": "AUTO",
-      "counterAxisSizingMode": "AUTO",
-      "paddingBottom": 50,
-      "paddingLeft": 50,
-      "paddingRight": 50,
-      "paddingTop": 50
     },
     "children": [
       {
-        "id": "root4",
+        "id": "button_component",
         "type": "componentInstance",
-        "componentId": "COMPONENT_ID",
-        "name": "Instance of My Component",
+        "name": "Button",
         "props": {
-          "x": 100,
-          "y": 200
+          "layoutMode": "VERTICAL",
+          "fills": [
+            {
+              "type": "SOLID",
+              "color": {
+                "r": 1,
+                "g": 0,
+                "b": 0
+              }
+            }
+          ]
         }
       }
     ]

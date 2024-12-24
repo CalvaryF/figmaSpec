@@ -1,7 +1,7 @@
 {
-  "id": "root3",
-  "type": "frame",
-  "name": "Frame",
+  "id": "frame_component",
+  "type": "component",
+  "name": "frame_component",
   "props": {
     "layoutMode": "VERTICAL",
     "fills": [
@@ -14,5 +14,10 @@
         }
       }
     ]
-  }
+  },
+  "children": [
+    {
+      "$ref": "./designs/components/button.json"
+    }
+  ]
 }

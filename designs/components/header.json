@@ -1,7 +1,18 @@
 {
-  "id": "aa",
-  "type": "rectangle",
-  "name": "Rectangle",
-  "width": 200,
-  "height": 200
+  "id": "header_component",
+  "type": "component",
+  "name": "header",
+  "props": {
+    "layoutMode": "VERTICAL",
+    "fills": [
+      {
+        "type": "SOLID",
+        "color": {
+          "r": 1,
+          "g": 0,
+          "b": 0
+        }
+      }
+    ]
+  }
 }
