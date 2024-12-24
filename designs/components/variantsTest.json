@@ -1,0 +1,64 @@
+{
+  "id": "variant_test",
+  "type": "componentSet",
+  "default": "variant_1",
+  "props": {
+    "name": "variantsTest"
+  },
+  "variants": [
+    {
+      "id": "icon_component",
+      "type": "component",
+      "props": {
+        "name": "Icon",
+        "layoutMode": "VERTICAL",
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 0,
+              "b": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "icon_component",
+      "type": "component",
+      "props": {
+        "name": "Icon",
+        "layoutMode": "VERTICAL",
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 0,
+              "b": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "icon_component",
+      "type": "component",
+      "props": {
+        "name": "Icon",
+        "layoutMode": "VERTICAL",
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 0,
+              "b": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
