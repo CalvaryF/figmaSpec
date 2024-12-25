@@ -31,7 +31,7 @@ figma.on("run", async () => {
     // Add modes to the collection
     //restricted by figma payment tier
     for (const mode of collectionData.modes) {
-      // collection.addMode(mode.name);
+      //collection.addMode(mode.name);
     }
 
     // Add variables to the collection
@@ -42,12 +42,11 @@ figma.on("run", async () => {
         collection,
         variableData.type
       );
-      console.log(variable);
-
+      console.log(collection);
+      const defaultModeId = collection.defaultModeId;
+      console.log(defaultModeId);
+      variable.setValueForMode(defaultModeId, variableData.values.default);
       // Set values for each mode
-      // for (const [modeId, value] of Object.entries(variableData.values)) {
-      //   variable.setValueForMode(modeId, value);
-      // }
     }
   }
 
@@ -131,6 +130,10 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
   //if (data.type === "text") console.log(data);
   Object.assign(node, data.props);
 
+  if (data.variableProps) {
+    bindVariablesToNode(node, data.variableProps);
+  }
+
   // Handle children recursively
   if (data.children) {
     for (const child of data.children) {
@@ -139,6 +142,40 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
   }
   return node;
 }
+
+function bindVariablesToNode(node, variableProps) {
+  // 1) Clear existing bound variables
+  node.boundVariables = {};
+
+  // 2) Find collections to look up variables by name
+  const allCollections = figma.variables.getLocalVariableCollections();
+
+  // 3) For each [propertyPath, variableName] pair, set bound variable directly
+  for (const [propertyPath, variableName] of Object.entries(variableProps)) {
+    const varId = findVariableIdByName(variableName, allCollections);
+    if (!varId) {
+      console.warn(
+        `Variable "${variableName}" not found. Skipping "${propertyPath}".`
+      );
+      continue;
+    }
+
+    // Directly bind propertyPath to the variable ID
+    node.boundVariables[propertyPath] = {
+      type: "VARIABLE_ALIAS",
+      id: varId,
+    };
+  }
+}
+
+function findVariableIdByName(name, collections) {
+  for (const collection of collections) {
+    const foundVar = collection.variables.find((v) => v.name === name);
+    if (foundVar) return foundVar.id;
+  }
+  return null;
+}
+
 function arrangeBaseNodes(nodes) {
   let offsetXComponent = 0;
   let offsetXOther = 0;
