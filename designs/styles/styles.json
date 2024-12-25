@@ -1,0 +1,18 @@
+[
+  {
+    "styleType": "TEXT",
+    "fontName": { "family": "Inter", "style": "Semi Bold" },
+    "props": {
+      "name": "hello world",
+      "fontSize": 25
+    }
+  },
+  {
+    "styleType": "TEXT",
+    "fontName": { "family": "Inter", "style": "Bold" },
+    "props": {
+      "name": "big dog style",
+      "fontSize": 20
+    }
+  }
+]

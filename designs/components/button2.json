@@ -1,0 +1,33 @@
+{
+  "id": "button2_component",
+  "type": "component",
+  "props": {
+    "name": "Button2",
+    "layoutMode": "VERTICAL",
+    "primaryAxisSizingMode": "AUTO",
+    "counterAxisSizingMode": "AUTO",
+    "paddingBottom": 20,
+    "paddingLeft": 20,
+    "paddingRight": 20,
+    "paddingTop": 20,
+    "fills": [
+      {
+        "type": "SOLID",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 0
+        }
+      }
+    ]
+  },
+  "children": [
+    {
+      "type": "text",
+      "props": {
+        "characters": "Button!",
+        "fontSize": 25
+      }
+    }
+  ]
+}

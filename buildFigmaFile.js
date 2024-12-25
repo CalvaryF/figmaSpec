@@ -1,11 +1,22 @@
 // Import design file
 import design from "./expandedDesignFile" assert { type: "json" };
+import styles from "./designs/styles/styles.json" assert { type: "json" };
 
 // Show the UI
 figma.showUI(__html__, { width: 1, height: 1 });
 
 // Event: Handle run
 figma.on("run", async () => {
+  figma.getLocalTextStyles().forEach((s) => s.remove());
+  for (const style of styles) {
+    const textStyle = figma.createTextStyle();
+    const fontName = style.fontName;
+    await figma.loadFontAsync(fontName);
+    textStyle.fontName = fontName;
+    console.log(textStyle);
+    Object.assign(textStyle, style.props);
+  }
+
   figma.currentPage.children.forEach((n) => n.remove());
 
   // Create everything
@@ -71,6 +82,7 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
   parent.appendChild(node);
 
   // Apply properties
+  //if (data.type === "text") console.log(data);
   Object.assign(node, data.props);
 
   // Handle children recursively

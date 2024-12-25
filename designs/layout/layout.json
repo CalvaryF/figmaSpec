@@ -14,6 +14,12 @@
     },
     "children": [
       {
+        "$ref": "./designs/components/button2.json"
+      },
+      {
+        "$ref": "./designs/components/frame.json"
+      },
+      {
         "$ref": "./designs/components/variantsTest.json"
       }
     ]
