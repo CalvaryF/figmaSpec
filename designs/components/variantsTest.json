@@ -1,7 +1,7 @@
 {
   "id": "variant_test",
   "type": "componentSet",
-  "default": "variant_1",
+  "default": "variant_one",
   "props": {
     "name": "variantsTest"
   },

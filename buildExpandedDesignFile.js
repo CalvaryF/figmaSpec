@@ -167,6 +167,43 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
             const data = fs.readFileSync(node.$ref, "utf8");
             const parsed = JSON.parse(data);
 
+            if (parsed.type === "componentSet" && selectVariants) {
+              // Attempt to match a specified variant
+              let matchedVariant = node.variant
+                ? parsed.variants?.find((v) => v.id === node.variant)
+                : null;
+
+              // If no specified variant or it wasn't found
+              if (!matchedVariant) {
+                // Use "default" if it exists and references a valid variant
+                if (parsed.default) {
+                  matchedVariant = parsed.variants?.find(
+                    (v) => v.id === parsed.default
+                  );
+                }
+                // If still no match, fall back to first variant
+                if (
+                  !matchedVariant &&
+                  Array.isArray(parsed.variants) &&
+                  parsed.variants.length > 0
+                ) {
+                  matchedVariant = parsed.variants[0];
+                }
+              }
+
+              if (matchedVariant) {
+                if (matchedVariant.props) delete matchedVariant.props;
+                if (matchedVariant.children) delete matchedVariant.children;
+                return {
+                  ...matchedVariant,
+                  type: "componentInstance",
+                };
+              } else {
+                console.warn(`No valid variant found in "${node.$ref}"`);
+                return parsed;
+              }
+            }
+
             if (parsed.type === "component") {
               if (parsed.props) delete parsed.props;
               if (parsed.children) delete parsed.children;
@@ -182,11 +219,11 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
         }
 
         if (Array.isArray(node.children)) {
-          node.children = resolveStructure(node.children);
+          node.children = resolveStructure(node.children, selectVariants);
         }
 
         if (Array.isArray(node.variants)) {
-          node.variants = resolveStructure(node.variants);
+          node.variants = resolveStructure(node.variants, selectVariants);
         }
 
         return node;
@@ -195,9 +232,9 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
 
     // Process: Extract components, then build structure
     const extractedComponents = resolveStructure(
-      extractComponents(objArray, true)
+      extractComponents(objArray, false)
     );
-    const structuredArray = resolveStructure(objArray);
+    const structuredArray = resolveStructure(objArray, true);
 
     return [...extractedComponents, ...structuredArray];
   };

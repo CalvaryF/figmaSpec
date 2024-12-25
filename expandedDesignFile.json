@@ -50,7 +50,7 @@
   {
     "id": "variant_test",
     "type": "componentSet",
-    "default": "variant_1",
+    "default": "variant_one",
     "props": {
       "name": "variantsTest"
     },
@@ -126,14 +126,14 @@
       "primaryAxisSizingMode": "AUTO",
       "counterAxisSizingMode": "AUTO",
       "paddingBottom": 50,
-      "paddingLeft": 50,
+      "paddingLeft": 40,
       "paddingRight": 50,
       "paddingTop": 50
     },
     "children": [
       {
-        "$ref": "./designs/components/variantsTest.json",
-        "variant": "variant_one"
+        "id": "variant_one",
+        "type": "componentInstance"
       }
     ]
   }
