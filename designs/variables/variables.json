@@ -1,0 +1,37 @@
+{
+  "collections": [
+    {
+      "name": "UI Theme",
+      "modes": [
+        { "id": "default", "name": "Light Mode" },
+        { "id": "darkMode", "name": "Dark Mode" }
+      ],
+      "variables": [
+        {
+          "name": "Background Color",
+          "type": "COLOR",
+          "values": {
+            "default": { "r": 0.5, "g": 1, "b": 1, "a": 1 },
+            "darkMode": { "r": 0, "g": 0, "b": 0, "a": 1 }
+          }
+        },
+        {
+          "name": "Text Size",
+          "type": "FLOAT",
+          "values": {
+            "default": 14,
+            "darkMode": 16
+          }
+        },
+        {
+          "name": "Show Tooltip",
+          "type": "BOOLEAN",
+          "values": {
+            "default": true,
+            "darkMode": false
+          }
+        }
+      ]
+    }
+  ]
+}

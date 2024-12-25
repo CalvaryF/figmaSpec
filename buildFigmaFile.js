@@ -1,6 +1,7 @@
 // Import design file
 import design from "./expandedDesignFile" assert { type: "json" };
 import styles from "./designs/styles/styles.json" assert { type: "json" };
+import variables from "./designs/variables/variables.json" assert { type: "json" };
 
 // Show the UI
 figma.showUI(__html__, { width: 1, height: 1 });
@@ -13,8 +14,41 @@ figma.on("run", async () => {
     const fontName = style.fontName;
     await figma.loadFontAsync(fontName);
     textStyle.fontName = fontName;
-    console.log(textStyle);
     Object.assign(textStyle, style.props);
+  }
+
+  // Delete all existing variables and variable collections
+  const collections = figma.variables.getLocalVariableCollections();
+  collections.forEach((collection) => collection.remove());
+
+  // Create new variables
+  for (const collectionData of variables.collections) {
+    console.log("var creation");
+    const collection = figma.variables.createVariableCollection(
+      collectionData.name
+    );
+
+    // Add modes to the collection
+    //restricted by figma payment tier
+    for (const mode of collectionData.modes) {
+      // collection.addMode(mode.name);
+    }
+
+    // Add variables to the collection
+    for (const variableData of collectionData.variables) {
+      console.log("var");
+      const variable = figma.variables.createVariable(
+        variableData.name,
+        collection,
+        variableData.type
+      );
+      console.log(variable);
+
+      // Set values for each mode
+      // for (const [modeId, value] of Object.entries(variableData.values)) {
+      //   variable.setValueForMode(modeId, value);
+      // }
+    }
   }
 
   figma.currentPage.children.forEach((n) => n.remove());
