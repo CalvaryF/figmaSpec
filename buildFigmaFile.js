@@ -42,9 +42,7 @@ figma.on("run", async () => {
         collection,
         variableData.type
       );
-      console.log(collection);
       const defaultModeId = collection.defaultModeId;
-      console.log(defaultModeId);
       variable.setValueForMode(defaultModeId, variableData.values.default);
       // Set values for each mode
     }
@@ -77,14 +75,12 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
       return;
     }
   } else if (data.type === "componentSet") {
-    console.log("fallback");
     // Build each variant as a standalone component
     const variants = [];
     for (const variant of data.variants) {
       const variantNode = await createOrUpdateFigmaComponent(variant, parent);
       if (variantNode) variants.push(variantNode);
     }
-    console.log(variants);
     // Combine into a single set if possible
     if (variants.length > 1) {
       console.log("variant set tried");
@@ -129,8 +125,9 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
   // Apply properties
   //if (data.type === "text") console.log(data);
   Object.assign(node, data.props);
-
+  //console.log(data.variableProps);
   if (data.variableProps) {
+    console.log(data.variableProps);
     bindVariablesToNode(node, data.variableProps);
   }
 
@@ -144,16 +141,19 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
 }
 
 function bindVariablesToNode(node, variableProps) {
+  console.log("called");
   // 1) Clear existing bound variables
-  node.boundVariables = {};
-
+  removeAllBindingsDynamic(node);
+  console.log("called2");
   // 2) Find collections to look up variables by name
   const allCollections = figma.variables.getLocalVariableCollections();
-
+  console.log(allCollections);
   // 3) For each [propertyPath, variableName] pair, set bound variable directly
   for (const [propertyPath, variableName] of Object.entries(variableProps)) {
-    const varId = findVariableIdByName(variableName, allCollections);
-    if (!varId) {
+    console.log(variableName);
+    const figvar = findVariableIdByName(variableName);
+    //console.log(figvar);
+    if (!figvar) {
       console.warn(
         `Variable "${variableName}" not found. Skipping "${propertyPath}".`
       );
@@ -161,19 +161,30 @@ function bindVariablesToNode(node, variableProps) {
     }
 
     // Directly bind propertyPath to the variable ID
-    node.boundVariables[propertyPath] = {
-      type: "VARIABLE_ALIAS",
-      id: varId,
-    };
+
+    node.setBoundVariable(propertyPath, figvar);
   }
 }
 
-function findVariableIdByName(name, collections) {
-  for (const collection of collections) {
-    const foundVar = collection.variables.find((v) => v.name === name);
-    if (foundVar) return foundVar.id;
+function removeAllBindingsDynamic(node) {
+  if ("getBinding" in node && "removeBinding" in node) {
+    const possibleProperties = Object.keys(node); // Inspect the node's properties dynamically
+    for (const property of possibleProperties) {
+      try {
+        if (node.getBinding(property)) {
+          node.removeBinding(property);
+        }
+      } catch (error) {
+        // Ignore errors for non-bindable properties
+      }
+    }
   }
-  return null;
+}
+
+function findVariableIdByName(name) {
+  const allVariables = figma.variables.getLocalVariables();
+  const foundVar = allVariables.find((v) => v.name === name);
+  return foundVar ? foundVar : null;
 }
 
 function arrangeBaseNodes(nodes) {

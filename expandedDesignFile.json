@@ -22,6 +22,9 @@
         }
       ]
     },
+    "variableProps": {
+      "paddingBottom": "Text Size"
+    },
     "children": [
       {
         "type": "text",
@@ -197,7 +200,10 @@
     "children": [
       {
         "id": "button2_component",
-        "type": "componentInstance"
+        "type": "componentInstance",
+        "variableProps": {
+          "paddingBottom": "Text Size"
+        }
       },
       {
         "id": "frame_component",

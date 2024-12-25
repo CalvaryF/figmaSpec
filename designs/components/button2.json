@@ -21,6 +21,9 @@
       }
     ]
   },
+  "variableProps": {
+    "paddingBottom": "Text Size"
+  },
   "children": [
     {
       "type": "text",
