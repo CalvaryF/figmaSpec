@@ -48,36 +48,6 @@
     ]
   },
   {
-    "id": "frame_component",
-    "type": "component",
-    "props": {
-      "name": "frame_component",
-      "layoutMode": "VERTICAL",
-      "primaryAxisSizingMode": "AUTO",
-      "counterAxisSizingMode": "AUTO",
-      "fills": [
-        {
-          "type": "SOLID",
-          "color": {
-            "r": 0,
-            "g": 1,
-            "b": 1
-          }
-        }
-      ],
-      "paddingLeft": 10,
-      "paddingRight": 10,
-      "paddingBottom": 10,
-      "paddingTop": 10
-    },
-    "children": [
-      {
-        "id": "button_component",
-        "type": "componentInstance"
-      }
-    ]
-  },
-  {
     "id": "variant_test",
     "type": "componentSet",
     "default": "variant_1",
@@ -156,23 +126,11 @@
       "primaryAxisSizingMode": "AUTO",
       "counterAxisSizingMode": "AUTO",
       "paddingBottom": 50,
-      "paddingLeft": 40,
+      "paddingLeft": 50,
       "paddingRight": 50,
       "paddingTop": 50
     },
     "children": [
-      {
-        "id": "frame_component",
-        "type": "componentInstance"
-      },
-      {
-        "id": "frame_component",
-        "type": "componentInstance"
-      },
-      {
-        "id": "button_component",
-        "type": "componentInstance"
-      },
       {
         "$ref": "./designs/components/variantsTest.json",
         "variant": "variant_one"

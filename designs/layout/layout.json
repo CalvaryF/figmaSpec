@@ -8,20 +8,11 @@
       "primaryAxisSizingMode": "AUTO",
       "counterAxisSizingMode": "AUTO",
       "paddingBottom": 50,
-      "paddingLeft": 40,
+      "paddingLeft": 50,
       "paddingRight": 50,
       "paddingTop": 50
     },
     "children": [
-      {
-        "$ref": "./designs/components/frame.json"
-      },
-      {
-        "$ref": "./designs/components/frame.json"
-      },
-      {
-        "$ref": "./designs/components/button.json"
-      },
       {
         "$ref": "./designs/components/variantsTest.json",
         "variant": "variant_one"

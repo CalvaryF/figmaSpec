@@ -70,7 +70,13 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
     //   return components;
     // };
 
-    function extractComponents(objArray, visitedRefsParam, visitedIdsParam) {
+    function extractComponents(
+      objArray,
+      visitedRefsParam,
+      visitedIdsParam,
+      parentType
+    ) {
+      console.log("extract");
       const visitedRefs =
         visitedRefsParam instanceof Set ? visitedRefsParam : new Set();
       const visitedIds =
@@ -78,15 +84,17 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
       let components = [];
 
       objArray.forEach((obj) => {
+        //console.log(obj.variants);
         // Descend into children first
         if (Array.isArray(obj.children)) {
           components = components.concat(
-            extractComponents(obj.children, visitedRefs, visitedIds)
+            extractComponents(obj.children, visitedRefs, visitedIds, obj.type)
           );
         }
 
         // Resolve $ref, then process resolved children/components
         if (obj["$ref"]) {
+          console.log("ref");
           const refPath = obj["$ref"];
           if (!visitedRefs.has(refPath)) {
             try {
@@ -97,15 +105,36 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
 
               if (Array.isArray(resolved.children)) {
                 components = components.concat(
-                  extractComponents(resolved.children, visitedRefs, visitedIds)
+                  extractComponents(
+                    resolved.children,
+                    visitedRefs,
+                    visitedIds,
+                    resolved.type
+                  )
+                );
+              }
+              if (Array.isArray(resolved.variants)) {
+                console.log("inner variants");
+                console.log(resolved.type);
+                components = components.concat(
+                  extractComponents(
+                    resolved.variants,
+                    visitedRefs,
+                    visitedIds,
+                    resolved.type
+                  )
                 );
               }
 
               if (
                 (resolved.type === "component" ||
                   resolved.type === "componentSet") &&
-                !visitedIds.has(resolved.id)
+                !visitedIds.has(resolved.id) &&
+                parentType !== "componentSet"
               ) {
+                console.log("parent type");
+                console.log(parentType);
+                console.log(resolved);
                 visitedIds.add(resolved.id);
                 components.push(resolved);
               }
@@ -116,7 +145,11 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
         }
 
         // After children/$ref, record component
-        if (obj.type === "component" && !visitedIds.has(obj.id)) {
+        if (
+          obj.type === "component" &&
+          !visitedIds.has(obj.id) &&
+          parentType !== "componentSet"
+        ) {
           visitedIds.add(obj.id);
           components.push(obj);
         }
@@ -124,58 +157,6 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
 
       return components;
     }
-
-    // function extractComponents(objArray) {
-    //   const components = [];
-    //   const queue = [...objArray];
-
-    //   while (queue.length) {
-    //     const current = queue.shift();
-
-    //     // Check if this is a component
-    //     if (current.type === "component") {
-    //       resolvedRefs.add(current.id);
-    //       components.push(current);
-    //     }
-
-    //     // Enqueue children for BFS
-    //     if (Array.isArray(current.children)) {
-    //       queue.push(...current.children);
-    //     }
-
-    //     // Check for reference
-    //     if (current["$ref"]) {
-    //       const refPath = current["$ref"];
-    //       if (!resolvedRefs.has(refPath)) {
-    //         try {
-    //           const refData = fs.readFileSync(refPath, "utf8");
-    //           const resolvedChild = JSON.parse(refData);
-
-    //           // If the resolved child is a component or set, add to result
-    //           if (
-    //             resolvedChild.type === "component" ||
-    //             resolvedChild.type === "componentSet"
-    //           ) {
-    //             resolvedRefs.add(refPath);
-    //             components.push(resolvedChild);
-    //           }
-
-    //           // Enqueue children of the resolved object
-    //           if (Array.isArray(resolvedChild.children)) {
-    //             queue.push(...resolvedChild.children);
-    //           }
-    //         } catch (error) {
-    //           console.error(
-    //             `Error reading or parsing $ref at ${refPath}:`,
-    //             error
-    //           );
-    //         }
-    //       }
-    //     }
-    //   }
-
-    //   return components;
-    // }
 
     function resolveStructure(obj, selectVariants) {
       if (!Array.isArray(obj)) return obj;
