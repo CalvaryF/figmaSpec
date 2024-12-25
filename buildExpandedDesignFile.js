@@ -17,58 +17,6 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
 
   const resolveRefs = (objArray, resolvedRefs = new Set()) => {
     // First pass: Extract components and add to base array
-    // const extractComponents = (objArray) => {
-    //   let components = [];
-
-    //   objArray.forEach((obj) => {
-    //     // Add components to the flat array
-    //     if (obj.type === "component") {
-    //       resolvedRefs.add(obj.id);
-    //       components.push(obj);
-    //     }
-
-    //     // Recurse into children if present
-    //     if (Array.isArray(obj.children)) {
-    //       components = components.concat(extractComponents(obj.children));
-    //     }
-    //     // if (Array.isArray(obj.variants)) {
-    //     //   components = components.concat(extractComponents(obj.variants));
-    //     // }
-
-    //     // Resolve $ref and process the resolved object
-    //     if (obj["$ref"]) {
-    //       try {
-    //         const refPath = obj["$ref"];
-    //         if (!resolvedRefs.has(refPath)) {
-    //           const refData = fs.readFileSync(refPath, "utf8");
-    //           const resolvedChild = JSON.parse(refData);
-
-    //           if (
-    //             resolvedChild.type === "component" ||
-    //             resolvedChild.type === "componentSet"
-    //           ) {
-    //             resolvedRefs.add(refPath);
-    //             components.push(resolvedChild);
-    //           }
-
-    //           // Recurse into children of the resolved object
-    //           if (Array.isArray(resolvedChild.children)) {
-    //             components = components.concat(
-    //               extractComponents(resolvedChild.children)
-    //             );
-    //           }
-    //         }
-    //       } catch (err) {
-    //         console.error(
-    //           `Error reading or parsing $ref at ${obj["$ref"]}:`,
-    //           err
-    //         );
-    //       }
-    //     }
-    //   });
-
-    //   return components;
-    // };
 
     function extractComponents(
       objArray,

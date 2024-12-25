@@ -66,6 +66,18 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
       // Fallback if there's only one variant
       node = variants[0];
     }
+  } else if (data.type === "text") {
+    const textNode = figma.createText();
+    await figma.loadFontAsync(textNode.fontName);
+    node = textNode;
+
+    if (data.style) {
+      const allTextStyles = figma.getLocalTextStyles();
+      const matchingStyle = allTextStyles.find(
+        (style) => style.name === data.style
+      );
+      node.textStyleId = matchingStyle.id;
+    }
   } else {
     node = await createNodeByType(data.type);
     if (data.type === "component") {

@@ -24,6 +24,7 @@
   "children": [
     {
       "type": "text",
+      "style": "hello world",
       "props": {
         "characters": "Button!",
         "fontSize": 25
