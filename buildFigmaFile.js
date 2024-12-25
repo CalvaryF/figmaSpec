@@ -141,28 +141,19 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
 }
 
 function bindVariablesToNode(node, variableProps) {
-  console.log("called");
   // 1) Clear existing bound variables
   removeAllBindingsDynamic(node);
-  console.log("called2");
-  // 2) Find collections to look up variables by name
-  const allCollections = figma.variables.getLocalVariableCollections();
-  console.log(allCollections);
   // 3) For each [propertyPath, variableName] pair, set bound variable directly
   for (const [propertyPath, variableName] of Object.entries(variableProps)) {
-    console.log(variableName);
-    const figvar = findVariableIdByName(variableName);
-    //console.log(figvar);
-    if (!figvar) {
+    const figvar = findVariableByName(variableName);
+    if (figvar) {
+      node.setBoundVariable(propertyPath, figvar);
+    } else {
       console.warn(
         `Variable "${variableName}" not found. Skipping "${propertyPath}".`
       );
       continue;
     }
-
-    // Directly bind propertyPath to the variable ID
-
-    node.setBoundVariable(propertyPath, figvar);
   }
 }
 
@@ -181,7 +172,7 @@ function removeAllBindingsDynamic(node) {
   }
 }
 
-function findVariableIdByName(name) {
+function findVariableByName(name) {
   const allVariables = figma.variables.getLocalVariables();
   const foundVar = allVariables.find((v) => v.name === name);
   return foundVar ? foundVar : null;
