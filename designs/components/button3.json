@@ -1,0 +1,84 @@
+{
+  "id": "button3_component",
+  "type": "component",
+  "props": {
+    "name": "Button3",
+    "layoutMode": "VERTICAL",
+    "primaryAxisSizingMode": "AUTO",
+    "counterAxisSizingMode": "AUTO",
+    "paddingBottom": 20,
+    "paddingLeft": 20,
+    "paddingRight": 20,
+    "paddingTop": 20,
+    "fills": [
+      {
+        "type": "SOLID",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 0
+        }
+      }
+    ]
+  },
+  "variableProps": {
+    "paddingBottom": "Text Size"
+  },
+  "properties": {
+    "state": {
+      "type": "BOOLEAN",
+      "name": "Enabled",
+      "defaultValue": true
+    },
+    "label": {
+      "type": "TEXT",
+      "name": "Button Label",
+      "defaultValue": "Click Me!"
+    },
+    "icon": {
+      "type": "INSTANCE_SWAP",
+      "name": "Icon",
+      "defaultValue": "default_icon_component",
+      "allowedValues": [
+        "default_icon_component",
+        "hover_icon_component",
+        "pressed_icon_component"
+      ]
+    }
+  },
+  "children": [
+    {
+      "type": "text",
+      "style": "hello world",
+      "props": {
+        "characters": "Button!",
+        "fontSize": 25
+      },
+      "bindings": {
+        "label": {
+          "attribute": "characters"
+        }
+      }
+    },
+    {
+      "type": "instance",
+      "props": {
+        "id": "default_icon_component"
+      },
+      "bindings": {
+        "icon": {}
+      }
+    }
+  ],
+  "bindings": {
+    "self": {
+      "state": {
+        "attribute": "opacity",
+        "values": {
+          "true": 1,
+          "false": 0.5
+        }
+      }
+    }
+  }
+}
