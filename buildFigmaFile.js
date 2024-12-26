@@ -133,7 +133,15 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
 
   // If this node is a component, define its properties
   if (data.type === "component" && data.properties) {
-    addComponentProperties(node, data.properties);
+    for (const prop of data.properties) {
+      componentNode.addComponentProperty(
+        prop.name,
+        prop.type,
+        prop.defaultValue
+      );
+    }
+    //need logic for handling instance swap defaults
+    //need to actually connect the property to something
   }
 
   // Handle children recursively
@@ -162,12 +170,7 @@ function bindVariablesToNode(node, variableProps) {
   }
 }
 
-function addComponentProperties(componentNode, properties) {
-  for (const prop of properties) {
-    componentNode.addComponentProperty(prop.name, prop.type, prop.defaultValue);
-  }
-  //need logic for handling instance swap defaults
-}
+function addComponentProperties(componentNode, properties) {}
 
 function removeAllBindingsDynamic(node) {
   if ("getBinding" in node && "removeBinding" in node) {
