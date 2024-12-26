@@ -258,11 +258,11 @@ function findVariableByName(name) {
 function arrangeBaseNodes(nodes) {
   let offsetXComponent = 0;
   let offsetXOther = 0;
-  let spacing = 100;
+  const spacing = 100;
   let tallestComponentHeight = 0;
-  let componentSectionHeightOffset = 30;
+  const componentSectionHeightOffset = 30;
 
-  // Separate nodes into components and others
+  // Separate nodes into components vs. others
   const components = nodes.filter(
     (node) => node.type === "COMPONENT" || node.type === "COMPONENT_SET"
   );
@@ -272,44 +272,72 @@ function arrangeBaseNodes(nodes) {
 
   // Create a section node for components
   const componentSection = figma.createSection();
-
-  // Track total width for the section
   let totalComponentWidth = 0;
 
-  // Arrange components in the upper row and add to the section
+  // Arrange components in a row
   for (const component of components) {
+    // If it’s a component set, arrange child variants horizontally first
+    if (component.type === "COMPONENT_SET") {
+      let variantOffset = 0;
+      let maxVariantHeight = 0;
+
+      // Position each variant side by side
+      for (const variantNode of component.children) {
+        variantNode.x = variantOffset + spacing / 4;
+        variantOffset += variantNode.width + spacing / 4;
+        variantNode.y += +spacing / 4;
+        if (variantNode.height > maxVariantHeight) {
+          maxVariantHeight = variantNode.height;
+        }
+      }
+
+      // Resize the component set to fit total variant width + max variant height
+      component.resizeWithoutConstraints(
+        variantOffset - spacing / 4 + spacing / 2,
+        maxVariantHeight + spacing / 2
+      );
+      component.strokes = [
+        {
+          type: "SOLID",
+          color: { r: 151 / 255, g: 71 / 255, b: 255 / 255 },
+        },
+      ];
+      component.strokeWeight = 1;
+      component.dashPattern = [16, 8];
+      component.strokeAlign = "CENTER";
+    }
+
+    // Now position this component / component set in the row
     component.x = offsetXComponent + spacing / 2;
-    component.y = spacing / 2 + componentSectionHeightOffset; // Top row within the section
+    component.y = spacing / 2 + componentSectionHeightOffset;
     offsetXComponent += component.width + spacing;
 
-    // Add the component to the section
+    // Move component under section
     componentSection.appendChild(component);
 
-    // Update the tallest component height
+    // Track tallest in this row
     if (component.height > tallestComponentHeight) {
       tallestComponentHeight = component.height;
     }
 
-    // Update total width for the section
-    totalComponentWidth = offsetXComponent - spacing; // Subtract extra spacing after the last component
+    // Track total used width (minus last spacing)
+    totalComponentWidth = offsetXComponent - spacing;
   }
 
-  // Adjust section size to fit components
+  // Resize the section to fit all components
   componentSection.resizeWithoutConstraints(
     totalComponentWidth + spacing,
     tallestComponentHeight + spacing + componentSectionHeightOffset
   );
   componentSection.name = "Components";
+  componentSection.x = 0;
+  componentSection.y = 0;
 
-  // Position the section on the canvas
-  componentSection.x = 0; // Adjust as needed
-  componentSection.y = 0; // Adjust as needed
-
-  // Arrange other nodes in the lower row
+  // Arrange all non-components below
   for (const other of others) {
     other.x = offsetXOther;
     other.y =
-      spacing + tallestComponentHeight + spacing + componentSectionHeightOffset; // Below the tallest component
+      spacing + tallestComponentHeight + spacing + componentSectionHeightOffset;
     offsetXOther += other.width + spacing;
   }
 }

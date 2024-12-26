@@ -147,6 +147,8 @@
         "props": {
           "name": "variant_eight",
           "layoutMode": "VERTICAL",
+          "primaryAxisSizingMode": "AUTO",
+          "counterAxisSizingMode": "AUTO",
           "fills": [
             {
               "type": "SOLID",
