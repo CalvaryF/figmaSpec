@@ -8,6 +8,7 @@ figma.showUI(__html__, { width: 1, height: 1 });
 
 // Event: Handle run
 figma.on("run", async () => {
+  console.log("-----");
   figma.getLocalTextStyles().forEach((s) => s.remove());
   for (const style of styles) {
     const textStyle = figma.createTextStyle();
@@ -36,7 +37,6 @@ figma.on("run", async () => {
 
     // Add variables to the collection
     for (const variableData of collectionData.variables) {
-      console.log("var");
       const variable = figma.variables.createVariable(
         variableData.name,
         collection,
@@ -59,13 +59,16 @@ figma.on("run", async () => {
   arrangeBaseNodes(figma.currentPage.children);
 });
 
-async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
+async function createOrUpdateFigmaComponent(
+  data,
+  parent = figma.currentPage,
+  path = []
+) {
+  console.log(`Current path: ${path.join("/")}`);
   let node;
 
   if (data.type === "componentInstance") {
-    // Resolve component by custom ID stored in pluginData
     const component = figma.currentPage.findOne((n) => {
-      //  console.log(n.getPluginData("customId"));
       return n.getPluginData("customId") === data.id;
     });
     if (component && component.type === "COMPONENT") {
@@ -75,13 +78,13 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
       return;
     }
   } else if (data.type === "componentSet") {
-    // Build each variant as a standalone component
     const variants = [];
     for (const variant of data.variants) {
-      const variantNode = await createOrUpdateFigmaComponent(variant, parent);
+      const variantNode = await createOrUpdateFigmaComponent(variant, parent, [
+        ...path,
+      ]);
       if (variantNode) variants.push(variantNode);
     }
-    // Combine into a single set if possible
     if (variants.length > 1) {
       console.log("variant set tried");
       node = figma.combineAsVariants(variants, parent);
@@ -92,7 +95,6 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
       node.setPluginData("customId", data.id);
     } else {
       console.log("fallback");
-      // Fallback if there's only one variant
       node = variants[0];
     }
   } else if (data.type === "text") {
@@ -111,7 +113,6 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
     node = await createNodeByType(data.type);
     if (data.type === "component") {
       node.setPluginData("customId", data.id);
-      // console.log(node.getPluginData("customId"));
     }
   }
 
@@ -121,38 +122,35 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
   }
 
   parent.appendChild(node);
-
-  // Apply immediate props
   Object.assign(node, data.props);
 
-  // Apply variable bindings if any
   if (data.variableProps) {
-    console.log(data.variableProps);
+    //console.log(data.variableProps);
     bindVariablesToNode(node, data.variableProps);
   }
 
-  // If this node is a component, define its properties
+  // Handle children recursively with proper path tracking
+  if (data.children) {
+    for (let i = 0; i < data.children.length; i++) {
+      const childPath = [...path, i]; // Create new path array for each child
+      await createOrUpdateFigmaComponent(data.children[i], node, childPath);
+    }
+  }
+
   if (data.type === "component" && data.properties) {
     for (const prop of data.properties) {
-      componentNode.addComponentProperty(
-        prop.name,
-        prop.type,
-        prop.defaultValue
-      );
+      node.addComponentProperty(prop.name, prop.type, prop.defaultValue);
     }
-    //need logic for handling instance swap defaults
-    //need to actually connect the property to something
   }
 
-  // Handle children recursively
-  if (data.children) {
-    for (const child of data.children) {
-      await createOrUpdateFigmaComponent(child, node);
-    }
+  if (data.bindings) {
+    // console.log("h");
+    // console.log(parent);
+    // console.log(data.bindings);
   }
+
   return node;
 }
-
 function bindVariablesToNode(node, variableProps) {
   // 1) Clear existing bound variables
   removeAllBindingsDynamic(node);
@@ -169,8 +167,6 @@ function bindVariablesToNode(node, variableProps) {
     }
   }
 }
-
-function addComponentProperties(componentNode, properties) {}
 
 function removeAllBindingsDynamic(node) {
   if ("getBinding" in node && "removeBinding" in node) {

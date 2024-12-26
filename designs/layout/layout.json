@@ -21,6 +21,62 @@
       },
       {
         "$ref": "./designs/components/variantsTest.json"
+      },
+      {
+        "id": "icon_component",
+        "type": "frame",
+        "props": {
+          "name": "Icon",
+          "layoutMode": "VERTICAL",
+          "fills": [
+            {
+              "type": "SOLID",
+              "color": {
+                "r": 1,
+                "g": 0,
+                "b": 1
+              }
+            }
+          ]
+        },
+        "children": [
+          {
+            "id": "icon_component",
+            "type": "frame",
+            "props": {
+              "name": "Icon",
+              "layoutMode": "VERTICAL",
+              "fills": [
+                {
+                  "type": "SOLID",
+                  "color": {
+                    "r": 1,
+                    "g": 0,
+                    "b": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "icon_component",
+            "type": "frame",
+            "props": {
+              "name": "Icon",
+              "layoutMode": "VERTICAL",
+              "fills": [
+                {
+                  "type": "SOLID",
+                  "color": {
+                    "r": 1,
+                    "g": 0,
+                    "b": 1
+                  }
+                }
+              ]
+            }
+          }
+        ]
       }
     ]
   }

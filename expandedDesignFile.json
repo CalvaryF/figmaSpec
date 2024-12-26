@@ -45,11 +45,12 @@
           "characters": "Button!",
           "fontSize": 25
         },
-        "bindings": {
-          "label": {
+        "bindings": [
+          {
+            "name": "Label",
             "attribute": "characters"
           }
-        }
+        ]
       }
     ]
   },
@@ -241,6 +242,62 @@
       {
         "id": "variant_one",
         "type": "componentInstance"
+      },
+      {
+        "id": "icon_component",
+        "type": "frame",
+        "props": {
+          "name": "Icon",
+          "layoutMode": "VERTICAL",
+          "fills": [
+            {
+              "type": "SOLID",
+              "color": {
+                "r": 1,
+                "g": 0,
+                "b": 1
+              }
+            }
+          ]
+        },
+        "children": [
+          {
+            "id": "icon_component",
+            "type": "frame",
+            "props": {
+              "name": "Icon",
+              "layoutMode": "VERTICAL",
+              "fills": [
+                {
+                  "type": "SOLID",
+                  "color": {
+                    "r": 1,
+                    "g": 0,
+                    "b": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "icon_component",
+            "type": "frame",
+            "props": {
+              "name": "Icon",
+              "layoutMode": "VERTICAL",
+              "fills": [
+                {
+                  "type": "SOLID",
+                  "color": {
+                    "r": 1,
+                    "g": 0,
+                    "b": 1
+                  }
+                }
+              ]
+            }
+          }
+        ]
       }
     ]
   }
