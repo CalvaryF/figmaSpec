@@ -163,13 +163,10 @@ function bindVariablesToNode(node, variableProps) {
 }
 
 function addComponentProperties(componentNode, properties) {
-  for (const propSpec of Object.values(properties)) {
-    componentNode.addComponentProperty(
-      propSpec.name,
-      propSpec.type,
-      propSpec.defaultValue
-    );
+  for (const prop of properties) {
+    componentNode.addComponentProperty(prop.name, prop.type, prop.defaultValue);
   }
+  //need logic for handling instance swap defaults
 }
 
 function removeAllBindingsDynamic(node) {

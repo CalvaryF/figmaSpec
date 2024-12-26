@@ -25,18 +25,18 @@
     "variableProps": {
       "paddingBottom": "Text Size"
     },
-    "properties": {
-      "state": {
+    "properties": [
+      {
+        "name": "State",
         "type": "BOOLEAN",
-        "name": "Enabled",
         "defaultValue": true
       },
-      "label": {
+      {
+        "name": "Label",
         "type": "TEXT",
-        "name": "Button Label",
         "defaultValue": "Click Me!"
       }
-    },
+    ],
     "children": [
       {
         "type": "text",
@@ -221,18 +221,18 @@
         "variableProps": {
           "paddingBottom": "Text Size"
         },
-        "properties": {
-          "state": {
+        "properties": [
+          {
+            "name": "State",
             "type": "BOOLEAN",
-            "name": "Enabled",
             "defaultValue": true
           },
-          "label": {
+          {
+            "name": "Label",
             "type": "TEXT",
-            "name": "Button Label",
             "defaultValue": "Click Me!"
           }
-        }
+        ]
       },
       {
         "id": "frame_component",
