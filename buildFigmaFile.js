@@ -62,9 +62,8 @@ figma.on("run", async () => {
 async function createOrUpdateFigmaComponent(
   data,
   parent = figma.currentPage,
-  path = []
+  ancestorComponents = [] // Track component ancestors
 ) {
-  console.log(`Current path: ${path.join("/")}`);
   let node;
 
   if (data.type === "componentInstance") {
@@ -80,13 +79,14 @@ async function createOrUpdateFigmaComponent(
   } else if (data.type === "componentSet") {
     const variants = [];
     for (const variant of data.variants) {
-      const variantNode = await createOrUpdateFigmaComponent(variant, parent, [
-        ...path,
-      ]);
+      const variantNode = await createOrUpdateFigmaComponent(
+        variant,
+        parent,
+        ancestorComponents
+      );
       if (variantNode) variants.push(variantNode);
     }
     if (variants.length > 1) {
-      console.log("variant set tried");
       node = figma.combineAsVariants(variants, parent);
       node.name =
         (data.props && data.props.name) != null
@@ -94,7 +94,6 @@ async function createOrUpdateFigmaComponent(
           : "Unnamed Variant Set";
       node.setPluginData("customId", data.id);
     } else {
-      console.log("fallback");
       node = variants[0];
     }
   } else if (data.type === "text") {
@@ -125,28 +124,98 @@ async function createOrUpdateFigmaComponent(
   Object.assign(node, data.props);
 
   if (data.variableProps) {
-    //console.log(data.variableProps);
     bindVariablesToNode(node, data.variableProps);
   }
 
-  // Handle children recursively with proper path tracking
-  if (data.children) {
-    for (let i = 0; i < data.children.length; i++) {
-      const childPath = [...path, i]; // Create new path array for each child
-      await createOrUpdateFigmaComponent(data.children[i], node, childPath);
-    }
+  // Track component ancestors
+  const currentAncestors = [...ancestorComponents];
+  if (data.type === "component") {
+    currentAncestors.push({
+      node,
+      id: data.id,
+      properties: data.properties || [],
+    });
   }
 
+  // Set up component properties
   if (data.type === "component" && data.properties) {
     for (const prop of data.properties) {
-      node.addComponentProperty(prop.name, prop.type, prop.defaultValue);
+      await node.addComponentProperty(prop.name, prop.type, prop.defaultValue);
     }
   }
 
+  // Handle children recursively
+  if (data.children) {
+    for (const child of data.children) {
+      await createOrUpdateFigmaComponent(child, node, currentAncestors);
+    }
+  }
+
+  // Handle bindings
   if (data.bindings) {
-    // console.log("h");
-    // console.log(parent);
-    // console.log(data.bindings);
+    for (const binding of data.bindings) {
+      let targetComponent = null;
+
+      // Find the target component that owns the property
+      if (binding.componentId) {
+        const foundAncestor = currentAncestors.find(function (ancestor) {
+          return ancestor.id === binding.componentId;
+        });
+        if (foundAncestor) {
+          targetComponent = foundAncestor.node;
+        }
+      } else if (currentAncestors.length > 0) {
+        targetComponent = currentAncestors[currentAncestors.length - 1].node;
+      }
+
+      if (targetComponent) {
+        console.log("target component");
+        try {
+          // Find the matching property key from component definitions
+          console.log(targetComponent);
+          const definitions = targetComponent.componentPropertyDefinitions;
+          let matchingKey = null;
+          console.log(definitions);
+          // Look through all property definitions to find matching name
+          Object.keys(definitions).forEach(function (key) {
+            // Extract the name part before the @ symbol
+            const namePart = key.split("#")[0];
+            console.log(namePart);
+            if (namePart === binding.name) {
+              matchingKey = key;
+            }
+          });
+
+          console.log(matchingKey);
+
+          if (matchingKey) {
+            var bindingObject = {};
+            bindingObject[binding.attribute] = matchingKey;
+            node.componentPropertyReferences = bindingObject;
+            console.log("Set property reference:", bindingObject);
+          } else {
+            console.warn(
+              'Could not find matching property definition for "' +
+                binding.name +
+                '"'
+            );
+          }
+        } catch (error) {
+          console.error(
+            'Failed to bind property "' +
+              binding.name +
+              '" to attribute "' +
+              binding.attribute +
+              '"',
+            error
+          );
+        }
+      } else {
+        console.warn(
+          'Could not find target component for binding "' + binding.name + '"'
+        );
+      }
+    }
   }
 
   return node;

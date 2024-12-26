@@ -44,7 +44,13 @@
         "characters": "Button!",
         "fontSize": 25
       },
-      "bindings": [{ "name": "Label", "attribute": "characters" }]
+      "bindings": [
+        {
+          "name": "Label",
+          "attribute": "characters",
+          "componentId": "button3_component"
+        }
+      ]
     }
   ]
 }
