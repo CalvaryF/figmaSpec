@@ -14,7 +14,7 @@
     },
     "children": [
       {
-        "$ref": "./designs/components/button2.json"
+        "$ref": "./designs/components/button3.json"
       },
       {
         "$ref": "./designs/components/frame.json"

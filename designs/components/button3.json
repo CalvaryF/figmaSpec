@@ -34,16 +34,6 @@
       "type": "TEXT",
       "name": "Button Label",
       "defaultValue": "Click Me!"
-    },
-    "icon": {
-      "type": "INSTANCE_SWAP",
-      "name": "Icon",
-      "defaultValue": "default_icon_component",
-      "allowedValues": [
-        "default_icon_component",
-        "hover_icon_component",
-        "pressed_icon_component"
-      ]
     }
   },
   "children": [
@@ -59,26 +49,6 @@
           "attribute": "characters"
         }
       }
-    },
-    {
-      "type": "instance",
-      "props": {
-        "id": "default_icon_component"
-      },
-      "bindings": {
-        "icon": {}
-      }
     }
-  ],
-  "bindings": {
-    "self": {
-      "state": {
-        "attribute": "opacity",
-        "values": {
-          "true": 1,
-          "false": 0.5
-        }
-      }
-    }
-  }
+  ]
 }

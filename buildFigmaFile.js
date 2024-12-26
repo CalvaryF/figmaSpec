@@ -122,13 +122,18 @@ async function createOrUpdateFigmaComponent(data, parent = figma.currentPage) {
 
   parent.appendChild(node);
 
-  // Apply properties
-  //if (data.type === "text") console.log(data);
+  // Apply immediate props
   Object.assign(node, data.props);
-  //console.log(data.variableProps);
+
+  // Apply variable bindings if any
   if (data.variableProps) {
     console.log(data.variableProps);
     bindVariablesToNode(node, data.variableProps);
+  }
+
+  // If this node is a component, define its properties
+  if (data.type === "component" && data.properties) {
+    addComponentProperties(node, data.properties);
   }
 
   // Handle children recursively
@@ -154,6 +159,16 @@ function bindVariablesToNode(node, variableProps) {
       );
       continue;
     }
+  }
+}
+
+function addComponentProperties(componentNode, properties) {
+  for (const propSpec of Object.values(properties)) {
+    componentNode.addComponentProperty(
+      propSpec.name,
+      propSpec.type,
+      propSpec.defaultValue
+    );
   }
 }
 

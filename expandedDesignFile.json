@@ -1,9 +1,9 @@
 [
   {
-    "id": "button2_component",
+    "id": "button3_component",
     "type": "component",
     "props": {
-      "name": "Button2",
+      "name": "Button3",
       "layoutMode": "VERTICAL",
       "primaryAxisSizingMode": "AUTO",
       "counterAxisSizingMode": "AUTO",
@@ -25,6 +25,18 @@
     "variableProps": {
       "paddingBottom": "Text Size"
     },
+    "properties": {
+      "state": {
+        "type": "BOOLEAN",
+        "name": "Enabled",
+        "defaultValue": true
+      },
+      "label": {
+        "type": "TEXT",
+        "name": "Button Label",
+        "defaultValue": "Click Me!"
+      }
+    },
     "children": [
       {
         "type": "text",
@@ -32,6 +44,11 @@
         "props": {
           "characters": "Button!",
           "fontSize": 25
+        },
+        "bindings": {
+          "label": {
+            "attribute": "characters"
+          }
         }
       }
     ]
@@ -199,10 +216,22 @@
     },
     "children": [
       {
-        "id": "button2_component",
+        "id": "button3_component",
         "type": "componentInstance",
         "variableProps": {
           "paddingBottom": "Text Size"
+        },
+        "properties": {
+          "state": {
+            "type": "BOOLEAN",
+            "name": "Enabled",
+            "defaultValue": true
+          },
+          "label": {
+            "type": "TEXT",
+            "name": "Button Label",
+            "defaultValue": "Click Me!"
+          }
         }
       },
       {
