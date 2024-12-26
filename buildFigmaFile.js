@@ -163,30 +163,27 @@ async function createOrUpdateFigmaComponent(
         });
         if (foundAncestor) {
           targetComponent = foundAncestor.node;
+        } else {
+          console.warn(
+            `Could not find an anscestor node with id ${binding.componentId}`
+          );
         }
-      } else if (currentAncestors.length > 0) {
-        targetComponent = currentAncestors[currentAncestors.length - 1].node;
       }
 
       if (targetComponent) {
         console.log("target component");
         try {
           // Find the matching property key from component definitions
-          console.log(targetComponent);
           const definitions = targetComponent.componentPropertyDefinitions;
           let matchingKey = null;
-          console.log(definitions);
           // Look through all property definitions to find matching name
           Object.keys(definitions).forEach(function (key) {
             // Extract the name part before the @ symbol
             const namePart = key.split("#")[0];
-            console.log(namePart);
             if (namePart === binding.name) {
               matchingKey = key;
             }
           });
-
-          console.log(matchingKey);
 
           if (matchingKey) {
             var bindingObject = {};
