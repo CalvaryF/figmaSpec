@@ -1,7 +1,7 @@
-const esbuild = require("esbuild");
-const fs = require("fs");
-const { runScript } = require("./utils"); // Assume utils.js for shared utilities
-const path = require("path");
+import * as esbuild from "esbuild";
+import fs from "fs";
+import path from "path";
+import { runScript } from "./utils.js"; // Ensure the correct path and extension
 
 // Plugin to run a script before build
 function createPreBuildPlugin(scriptPath) {
