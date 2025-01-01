@@ -20,7 +20,6 @@ function createPreBuildPlugin(scriptPath) {
     },
   };
 }
-
 function watchAdditionalFiles(context, dir) {
   console.log("watch called");
   const watchFiles = (dir) => {
