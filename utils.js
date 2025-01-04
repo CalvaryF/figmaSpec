@@ -1,11 +1,11 @@
-const { exec } = require("child_process");
+import { exec } from "child_process";
 
 /**
  * Executes a given script asynchronously.
  * @param {string} scriptPath - Path to the script to execute.
  * @returns {Promise<void>} Resolves when the script completes, rejects on error.
  */
-function runScript(scriptPath) {
+export function runScript(scriptPath) {
   return new Promise((resolve, reject) => {
     exec(`node ${scriptPath}`, (err, stdout, stderr) => {
       if (err) {
@@ -18,7 +18,3 @@ function runScript(scriptPath) {
     });
   });
 }
-
-module.exports = {
-  runScript,
-};

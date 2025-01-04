@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Frame to JSON</title>
+        <style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+    textarea {
+        flex: 1;
+        width: 100%;
+        box-sizing: border-box;
+        border: none;
+        resize: none;
+        padding: 10px;
+        font-family: monospace;
+        font-size: 12px;
+        overflow: auto;
+    }
+
+    #controls {
+        padding: 10px;
+        background-color: #f4f4f4;
+        border-top: 1px solid #ccc;
+        text-align: right;
+    }
+
+    button {
+        padding: 5px 10px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .message {
+        padding: 10px;
+        font-size: 14px;
+        text-align: center;
+        color: #666;
+    }
+        </style>
+    </head>
+    <body>
+        <textarea id="output" readonly></textarea>
+        <div id="controls">
+            <button id="copyButton" disabled>Copy JSON</button>
+        </div>
+        <div class="message" id="message">Select a frame to view its JSON</div>
+        <script>
+            const output = document.getElementById("output");
+            const message = document.getElementById("message");
+            const copyButton = document.getElementById("copyButton");
+
+            // Listen for messages from the plugin
+            onmessage = (event) => {
+                const messageData = event.data.pluginMessage;
+
+                if (messageData.type === "frame-data") {
+                    if (messageData.payload) {
+                        output.style.display = "block";
+                        message.style.display = "none";
+                        output.textContent = JSON.stringify(messageData.payload, null, 2);
+                        copyButton.disabled = false;
+                    } else {
+                        output.style.display = "none";
+                        message.style.display = "block";
+                        message.textContent = "No valid frame selected.";
+                        copyButton.disabled = true;
+                    }
+                }
+            };
+
+            // Copy JSON to clipboard
+
+            copyButton.addEventListener("click", () => {
+                const jsonText = output.textContent;
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard
+                        .writeText(jsonText)
+                        .then(() => alert("JSON copied to clipboard!"))
+                        .catch((err) => alert("Failed to copy JSON: " + err));
+                } else {
+                    // Fallback for environments without navigator.clipboard
+                    const textArea = document.createElement("textarea");
+                    textArea.value = jsonText;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand("copy");
+                        console.log("JSON copied to clipboard!");
+                    } catch (err) {
+                        alert("Failed to copy JSON: " + err);
+                    }
+                    document.body.removeChild(textArea);
+                }
+            });
+            // Close plugin on Esc key
+
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") {
+                    parent.postMessage({ pluginMessage: { type: "close" } }, "*");
+                }
+            });
+        </script>
+    </body>
+</html>
+

@@ -1,0 +1,9 @@
+{
+  "name": "Frame to JSON",
+  "id": "frame-to-json",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": ["figma"],
+  "ui": "ui.html"
+}
+

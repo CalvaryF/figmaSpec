@@ -1,4 +1,4 @@
-const fs = require("fs");
+import fs from "fs";
 
 // Read JSON from layout.json
 fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
@@ -6,7 +6,6 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
     console.error("Error reading input file:", err);
     return;
   }
-
   let layout;
   try {
     layout = JSON.parse(data);
@@ -83,6 +82,7 @@ fs.readFile("designs/layout/layout.json", "utf8", (err, data) => {
                 console.log("parent type");
                 console.log(parentType);
                 console.log(resolved);
+                console.log("aaaa");
                 visitedIds.add(resolved.id);
                 components.push(resolved);
               }
