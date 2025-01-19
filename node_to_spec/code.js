@@ -14,10 +14,25 @@ function extractNodeData(node) {
         "y", 
         "width", 
         "height", 
+        "minWidth",
+        "maxWidth",
+        "minHeight",
+        "maxHeight",
+        "relativeTransform",
+        "absoluteTransform",
+        "absoluteBoundingBox",
+        "layoutAlign",
+        "constrainProportions",
+        "rotation",
+        "layoutSizingHorizontal",
+        "layoutSizingVertical",
+        "layoutGrow",
         "layoutMode", 
-        "paddingBottom", 
+        "paddingBottom",
+        "constraints",
         "paddingLeft", 
-        "paddingRight", 
+        "paddingRight",
+        "layoutPositioning",
         "paddingTop", 
         "primaryAxisSizingMode",
         "counterAxisSizingMode", 
@@ -39,9 +54,41 @@ function extractNodeData(node) {
         "textCase",
         "textDecoration",
         "textDecorationStyle",
+        "textDecorationOffset",
+        "textDecorationThickness",
+        "textDecorationColor",
+        "textDecorationSkipInk",
+        "letterSpacing",
+        "lineHeight",
+        "visible",
+        "leadingTrim",
+        "textStyleId",
+        "locked",
+        "opacity",
+        "blendMode",
+        "isMask",
+        "maskType",
+        "effects",
+        "effectStyleId",
+        "fillStyleId",
+        "strokes",
+        "strokeStyleId",
+        "strokeWeight",
+        "strokeJoin",
+        "strokeAlign",
+        "dashPattern",
+        "strokeGeometry",
+        "strokeCap",
+        "strokeMiterLimit",
+
+
+
 
     ];
     console.log(node);
+
+    console.log(Object.keys(node));
+    Object.getOwnPropertyNames(node);
     // Copy only the desired properties
     properties.forEach(prop => {
         if (prop in node) {
